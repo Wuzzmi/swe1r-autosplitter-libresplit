@@ -17,6 +17,7 @@ The same autosplitter logic, converted to Lua, with some additions/compatibility
 
 ### REQUIRES
 * [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main)
+* Star Wars Racer splits, available [here](https://github.com/Wuzzmi/swe1r-splits-libresplit/tree/master), or lss splits converted [here](https://libresplit.org/converter)
 * Installation of the re-released PC version of Star Wars Episode I Racer (Steam, GOG, etc.)  
     - does not work with the original CD version
 
