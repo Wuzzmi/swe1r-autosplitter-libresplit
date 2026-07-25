@@ -88,7 +88,8 @@ If you feel comfotable go ahead and adjust the settings to your liking. If you w
 ## ENABLE SCRIPT
 Open LibreSplit, right click in the window and select "Open Auto Splitter". Now select the script and "Open" it. Ensure that "Enable Auto Splitter" is checked.  
   
-![Load and Enable Autosplitter in LibreSplit](https://github.com/Wuzzmi/swe1r-auto_splitter/blob/main/img/libresplit-load-enable.png)  
+![Rightclick in LibreSplit](https://github.com/Wuzzmi/swe1r-auto_splitter/blob/main/img/rightclick-autosplitter-libresplit.png)  
+![Load and Enable Autosplitter in LibreSplit](https://github.com/Wuzzmi/swe1r-auto_splitter/blob/main/img/open-autosplitter-libresplit.png)
   
 > [!important]
 > If you edit your script settings after the script has already been loaded and enabled, you will need to uncheck and recheck "Enable Auto Splitter" for the changes to take effect.
