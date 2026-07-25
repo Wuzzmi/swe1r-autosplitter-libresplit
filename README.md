@@ -4,7 +4,7 @@ Based on [Galeforce's LiveSplit Autosplitter](https://github.com/everalert/swe1r
 The same autosplitter logic, converted to Lua, with some additions/compatibility changes.
 
 > [!note]
-> Unlike [LiveSplit](https://github.com/LiveSplit/LiveSplit), [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main) currently has no support for managing autosplitter settings. As well as viewing extra stats, like LiveSplit does through it's "[ASL variable viewer](https://github.com/hawkerm/LiveSplit.ASLVarViewer)" plugin. As a solution for these differences, this script utilizes in script settings, as well as the option to view the extra stats via terminal.
+> Unlike [LiveSplit](https://github.com/LiveSplit/LiveSplit), [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main) currently has no support for managing autosplitter settings. Viewing extra stats like LiveSplit can with the "[ASL variable viewer](https://github.com/hawkerm/LiveSplit.ASLVarViewer)" plugin, is also not supported. As a solution for these differences, this script utilizes in script settings, and the ability to print these stats in the terminal.
   
 ### FEATURES
 * Auto start when file is opened, or optionally when "Start Race" is selected 
@@ -17,7 +17,7 @@ The same autosplitter logic, converted to Lua, with some additions/compatibility
 
 ### REQUIRES
 * [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main)
-* Star Wars Racer splits, available [here](https://github.com/Wuzzmi/swe1r-splits-libresplit/tree/master), or lss splits converted [here](https://libresplit.org/converter)
+* Star Wars Racer [JSON splits](https://github.com/Wuzzmi/swe1r-splits-libresplit/tree/master), or [converted](https://libresplit.org/converter) LSS splits
 * Installation of the re-released PC version of Star Wars Episode I Racer (Steam, GOG, etc.)  
     - does not work with the original CD version
 
