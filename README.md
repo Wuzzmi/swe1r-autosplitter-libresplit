@@ -27,8 +27,8 @@ The same autosplitter logic, converted to Lua, with some additions/compatibility
 * Run Star Wars Racer
 ___
 ## SETUP
-* Download the script
-* Open the script in a text editor
+* [Download](https://github.com/Wuzzmi/swe1r-autosplitter-libresplit/archive/refs/heads/main.zip) the script
+* Open the script (swe1r-autosplitter.lua) in a text editor
    
 At the top there are script notes, followed by a small settings guide, and under that will be the "AUTOSPLITTER SETTING". 
 
