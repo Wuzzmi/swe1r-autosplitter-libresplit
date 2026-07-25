@@ -87,7 +87,7 @@ If you feel comfotable go ahead and adjust the settings to your liking. If you w
    
 ## ENABLE SCRIPT
 * Open LibreSplit
-* Right click in the window, check "Enable Auto Splitter" 
+* Right click in LibreSplit, check "Enable Auto Splitter" 
 * Right click again, select "Open Auto Splitter"
   
 ![Rightclick in LibreSplit](https://github.com/Wuzzmi/swe1r-auto_splitter/blob/main/img/rightclick-autosplitter-libresplit.png)
@@ -101,7 +101,7 @@ If you feel comfotable go ahead and adjust the settings to your liking. If you w
 > [!important]
 > If you edit your script settings after the script has already been loaded and enabled, you will need to uncheck and recheck "Enable Auto Splitter" for the changes to take effect.
   
-**Now everything is all set and the autosplitter will function when you run the game!**
+**Now everything is all set. The autosplitter will function when you run the game!**
 ___  
   
 ## FULL SETTINGS BREAKDOWN
