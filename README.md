@@ -11,7 +11,7 @@ The same autosplitter logic, converted to Lua, with some additions/compatibility
 * Auto split at race finish, with toggle for 1st place requirement
 * Optional auto reset, on return to file selection
 * Optional run category presets
-* Choose between IGT, LRT and RTA timing methods 
+* Choice of IGT, LRT and RTA timing methods 
 * Option to remove unfocused/tabbed-out time
 * Option to view extra stats in terminal
 
@@ -47,30 +47,30 @@ local sets = {
 -- TIMING METHOD  -->In race GT | RT No Loads | Real Time | [1,2,3] = [1](LRT)
    timeMethod = 1,--> [0](IGT)  |   [1](LRT)  | [2+](RTA) |      
 ----------------------------------------------------------|-------------------
--- REQUIRES 1ST PLACE, or if [false] requires 4th place,  |     [2] = [true]
+-- REQUIRES 1ST PLACE, If [false] requires 4th place,     |     [2] = [true]
    req1st = false, --  and 3rd on SMR/BB/BEC              |   [1,3] = [false] 
 ----------------------------------------------------------|-------------------
--- "START RACE" TIMER TRIGGER (SEMIFUNCTIONAL) - Move     |
+-- "START RACE" TIMER TRIGGER (Semifunctional) - Move     |
    trigSR = false, -- from "Track Select" > "START RACE"  |   [1,2] = [false] 
 ----------------------------------------------------------|-------------------
--- ENABLE RESET TRIGGER - triggers at file selection.     |      
-   reset = true, -- [false] for mid-run file switch.      |     [3] = [false]
+-- ENABLE RESET TRIGGER - Triggers at file selection.     |      
+   reset = true, -- set [false] if switching mode mid-run.|     [3] = [false]
 ----------------------------------------------------------\___________________
--- REMOVE UNFOCUSED TIME (TABBED OUT) requires RT No Loads 
-   noTab = false, -- Affects all presets [timeMethod = 1]
+-- REMOVE UNFOCUSED TIME (Tabbed-Out Time) Requires RT No Loads. 
+   noTab = false, -- Only affects LRT [timeMethod = 1], thus all presets. 
 ------------------------------------------------------------------------------
 -- VIEW EXTRA STATS IN TERMINAL (when LibreSplit is run through the terminal).
-   viewTermStats = false, -- Toggles the view of the following extra info.
+   viewTermStats = false, -- Toggles the view of the following extra stats.
 --  --  -VIEWABLE STATS  --  --  --  --  --  --  --  --  --  --  --  --  --  -
                 viewIGT = true, -- Total race IGT
          viewCurRaceIGT = false, -- Current race IGT
-          viewOverheats = true, -- Counts overheats over whole run
-             viewDeaths = true, -- Counts viewDeaths over whole run
+          viewOverheats = true, -- Counts overheats over the whole run
+             viewDeaths = true, -- Counts deaths over the whole run
 --____________________________________________________________________________
 ------------------------------------------------------------------------------
 }
 ```
-Here is where all settings can be modified. The script settings include a minimal description of each option, this should be enough to work with. For most cases the **```preset```** setting is the only setting that will need to be adjusted.  
+Here is where all settings can be modified. The script settings include a minimal description of each option, this should be enough to work with. For most cases **```preset```** is the only setting that will need to be adjusted.  
   
 > [!caution]
 > ```lua
@@ -103,11 +103,11 @@ If you feel comfotable go ahead and adjust the settings to your liking. If you w
 > [!important]
 > If you edit your script settings after the script has already been loaded and enabled, you will need to uncheck and recheck "Enable Auto Splitter" for the changes to take effect.
   
-**Now everything is all set. The autosplitter will function when you run the game!**
+**Now everything is all set. The autosplitter will function when you run Star Wars Racer!**
 ___  
   
 ## FULL SETTINGS BREAKDOWN
-**CATEGORY PRESET** 
+### CATEGORY PRESET
 ```lua
 preset = 1,
 ```
@@ -116,7 +116,7 @@ preset = 1,
 |:---:|:---:|:---:|:---:|:---:|
 | **preset =** | 0 | 1 | 2 | 3 |  
 ___
-**TIMING METHOD**
+### TIMING METHOD
 ```lua
 timeMethod = 1,
 ```
@@ -130,7 +130,7 @@ Use **```timeMethod```** to choose either IGT, LRT or RTA. As shown in the table
  > [!note]
 > RTA will be used to if **```timeMethod```** is set to any number other than **```0```** or **```1```**, not just **```2```**.
 ___
-**REQUIRE 1ST PLACE**
+### REQUIRE 1ST PLACE
 ```lua
 req1st = false,
 ```
@@ -141,7 +141,7 @@ req1st = false,
 | **```preset```** | **```2```** | **```1``` ```3```** |
 
 ___
-**"START RACE" TIMER TRIGGER (SEMIFUNCTIONAL)**
+### "START RACE" TIMER TRIGGER (Semifunctional)
 ```lua
 trigSR = false,
 ```
@@ -154,7 +154,7 @@ trigSR = false,
 > Currently the "Start Race" trigger is semifunctional. In order for the timer to trigger, you must enter the track selection scene, then move directly to select "Start Race". If you deviate, just return to the track selection scene before heading to "Start Race". 
 
 ___
-**ENABLE RESET TRIGGER**
+### ENABLE RESET TRIGGER
 ```lua
 reset = true,
 ```
@@ -165,7 +165,7 @@ reset = true,
 | **```preset```** |  | **```3```** |
  
 ___
-**REMOVE UNFOCUSED TIME (Tabbed-Out)**
+### REMOVE UNFOCUSED TIME (Tabbed-Out)
 ```lua
 noTab = false,
 ```
@@ -175,11 +175,11 @@ Use **```noTab```** to set unfocused/tabbed-out time to registered as loading ti
 |**noTab =**| true | false |
 
 ___
-**VIEW EXTRA STATS IN TERMINAL**
+### VIEW EXTRA STATS IN TERMINAL
 ```lua
 viewTermStats = false,
 ```
-**```viewTermStats```** toggles your enabled stats to be viewable in the terminal. **```viewTermStats```** has no effect unless you are running LibreSplit through the terminal, so keep **```false```** if not. This is not ideal, but is currently the best option. LiveSplit's "[ASL variable viewer](https://github.com/hawkerm/LiveSplit.ASLVarViewer)" plugin allows these stats to be viewed in [LiveSplit](https://github.com/LiveSplit/LiveSplit) (there is no LibreSplit alternative).   
+**```viewTermStats```** toggles the viewing of your enabled stats in the terminal. **```viewTermStats```** has no effect unless you are running LibreSplit through the terminal, so keep **```false```** if not. This is not ideal, but is currently the best option. LiveSplit's "[ASL variable viewer](https://github.com/hawkerm/LiveSplit.ASLVarViewer)" plugin allows these stats to be viewed in [LiveSplit](https://github.com/LiveSplit/LiveSplit) (there is no LibreSplit alternative).   
   
 Each stat is set the same way as **```viewTermStats```**.  
 Like in this table:
@@ -191,19 +191,19 @@ Like in this table:
 |**viewIGT =**| true | false |
 |**viewCurRaceIGT =**| true | etc... |  
   
-**DISPLAYABLE STATS**
+### DISPLAYABLE STATS
 ___
 **IGT**
 ```lua
 viewIGT = true,
 ```
-**```viewIGT```** displays you true IGT (totaled in game race times). This is very usefull if you are using LRT or RTA as your timing method and also want to track IGT. It is identical to the IGT timing method.
+**```viewIGT```** displays you true IGT (totaled in game race times). This is very useful if you are using LRT or RTA as your timing method and also want to track IGT. The time displayed is the same as the IGT timing method.
 ___
 **CURRENT RACE IGT**
 ```lua
 viewCurRaceIGT = false,
 ```
-**```viewCurRaceIGT```** displays the IGT of your current race only. This is identical to the ingame race timer. Not of much use, but it's here if you want it... maybe you want to see your previous race IGT in the menu before starting your next race?
+**```viewCurRaceIGT```** displays the IGT of your current race only. This is identical to the ingame race timer. Not of much use, but it's here if you want it... maybe you want to see the most recent race IGT in the menu before starting your next race?
 ___
 **OVERHEAT COUNT**
 ```lua
@@ -215,13 +215,13 @@ ___
 ```lua
 viewDeaths = true,
 ```
-**```viewDeaths```** shows how man times you have died during your run.
+**```viewDeaths```** shows how many times you have died during your run.
 ___
 
 ## POSSIBLE FUTURE IMPROVMENTS
-* Determine a proper memory address for triggering timer on "START RACE" selection (currently relying on sceneID, not ideal)
-* Add option for each individual race time (idealy with individual lap times) to be printed in terminal at the end of a run
-* Possible addition of more terminal stats (the source [ASL script](https://github.com/everalert/swe1r-autosplitter/blob/master/swe1r.asl) had a number of semi completed viewable stats being added)
+* Determine a proper memory address for triggering the timer on "START RACE" selection (currently relying on sceneID, not ideal).
+* Add option for each individual race time (idealy with individual lap times) to be printed in terminal at the end of a run.
+* Possible addition of more terminal stats. The source [ASL script](https://github.com/everalert/swe1r-autosplitter/blob/master/swe1r.asl) seems to have a number of semi completed viewable stats in the process of being added.
   
 ## LICENSE
 This repo is unlicensed.
