@@ -28,7 +28,7 @@ The same autosplitter logic, converted to Lua, with some additions/compatibility
 ___
 ## SETUP
 * [Download](https://github.com/Wuzzmi/swe1r-autosplitter-libresplit/archive/refs/heads/main.zip) and extract the autosplitter
-* Place either the extracted folder or just "swe1r-autosplitter.lua" where you prefer; commonly "~/.config/libresplit/auto-splitters/"
+* Place either the extracted folder or just "swe1r-autosplitter.lua" where you prefer; commonly in "~/.config/libresplit/auto-splitters/"
 * Open "swe1r-autosplitter.lua" in a text editor
    
 At the top there are script notes, followed by a small settings guide, and under that will be the "AUTOSPLITTER SETTING". 
