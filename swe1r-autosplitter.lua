@@ -51,7 +51,7 @@ local sets = {
 --------------------------- AUTOSPLITTER SETTINGS ----------------------------
 --____________________________________________________________________________
 -- CHOOSE RUN CATEGORY --> None | Any%/Amateur/Semi | 100% | New Game+ |
-   preset = 1,         --> [0]  |        [1]        | [2]  |    [3]    |
+   preset = 0,         --> [0]  |        [1]        | [2]  |    [3]    |
 --______________________________|___________________|______|___________|______
 ----------------------------------------------------------|  PRESET = SETS
 -- TIMING METHOD  -->In race GT | RT No Loads | Real Time | [1,2,3] = [1](LRT)
@@ -61,7 +61,7 @@ local sets = {
    req1st = false, --  and 3rd on SMR/BB/BEC              |   [1,3] = [false] 
 ----------------------------------------------------------|-------------------
 -- "START RACE" TIMER TRIGGER (Semifunctional) - Move     |
-   trigSR = false, -- from "Track Select" > "START RACE"  |   [1,2] = [false] 
+   trigSR = true, -- from "Track Select" > "START RACE"  |   [1,2] = [false] 
 ----------------------------------------------------------|-------------------
 -- ENABLE RESET TRIGGER - Triggers at file selection.     |      
    reset = true, -- set [false] if switching mode mid-run.|     [3] = [false]
@@ -73,7 +73,7 @@ local sets = {
    viewTermStats = false, -- Toggles the view of the following extra stats.
 --  --  -VIEWABLE STATS  --  --  --  --  --  --  --  --  --  --  --  --  --  -
                 viewIGT = true, -- Total race IGT
-         viewCurRaceIGT = false, -- Current race IGT
+         viewCurRaceIGT = true, -- Current race IGT
           viewOverheats = true, -- Counts overheats over the whole run
              viewDeaths = true, -- Counts deaths over the whole run
 --____________________________________________________________________________
@@ -122,22 +122,17 @@ local vars = {
 
 -- Add more to vars when term stats is enabled
 if sets.viewTermStats then
-    -- Terminal info variables
-    vars.infoTRIGT = "0.00"
-    vars.infoRIGT = "0.00"
-    vars.infoOHC = "0"
-    vars.infoDC = "0"
-    vars.cntOverHeat = 0
-    vars.cntDeath = 0
-    vars.statsIndent = 3
-    vars.statsWidth = 24
-    -- Terminal formatting variables
-    vars.titles = { 
-        strTRIGT = "IGT", 
-        strRIGT = "Current Race IGT", 
-        strOHC = "Overheat Counter", 
-        strDC = "Death Counter"
-    }
+    -- Terminal stat variables
+    vars.valOHC = 0
+    vars.valDC = 0
+    vars.titleTRIGT = "IGT" 
+    vars.titleRIGT = "Current Race IGT" 
+    vars.titleOHC = "Overheat Count" 
+    vars.titleDC = "Death Count"
+    vars.viewableTRIGT = "0.00"
+    vars.viewableRIGT = "0.00"
+    vars.viewableOHC = "0"
+    vars.viewableDC = "0"
 end
 
 function startup()
@@ -180,9 +175,9 @@ function state()
 end
 
 -- Prints title and value @ width(in chars) of viewable stat, if enabled
-local function termDisplay(title, value, width, condition)
+local function termDisplay(title, value, condition)
     local indent = string.rep(" ", 3)
-    local line = string.rep("_", width) 
+    local line = string.rep("_", 24) 
     if condition then
         print(    line .. "\n" .. 
         indent .. title .. "\n" ..
@@ -203,17 +198,30 @@ local function formatTime(seconds)
 end
 
 function update()
+    -- DEBUG VALUE PRINTING
+    for i, tbl in ipairs({sets, current, vars}) do
+        if i == 1 then
+            print('\n---------------------------\n      SETTINGS\n---------------------------')
+        elseif i == 2 then
+            print('\n---------------------------\n      ADDRESS VALUES\n---------------------------')
+        elseif i == 3 then
+            print('\n---------------------------\n      VARIABLE VALUES\n---------------------------')
+        end
+        for k, v in pairs(tbl) do
+            if type(v) ~= "string" then 
+                v = tostring(v)
+            end
+            print (k .. " = " .. v)
+        end
+    end
+
     -- View terminal info
     if sets.viewTermStats then
         print("\n")
-        termDisplay(vars.titles.strTRIGT, vars.infoTRIGT, vars.statsWidth, 
-        sets.viewIGT) 
-        termDisplay(vars.titles.strRIGT, vars.infoRIGT, vars.statsWidth, 
-        sets.viewCurRaceIGT) 
-        termDisplay(vars.titles.strOHC, vars.infoOHC, vars.statsWidth, 
-        sets.viewOverheats) 
-        termDisplay(vars.titles.strDC, vars.infoDC, vars.statsWidth, 
-        sets.viewDeaths) 
+        termDisplay(vars.titleTRIGT, vars.viewableTRIGT, sets.viewIGT) 
+        termDisplay(vars.titleRIGT, vars.viewableRIGT, sets.viewCurRaceIGT) 
+        termDisplay(vars.titleOHC, vars.viewableOHC, sets.viewOverheats) 
+        termDisplay(vars.titleDC, vars.viewableDC, sets.viewDeaths) 
         print("\n")
     end
     -- Dynamically update refresh rate based on frame time
@@ -222,41 +230,41 @@ function update()
     if sets.viewTermStats then
         if b_and(current.podFlags2, b_lshift(1, 6)) ~= 0 and 
         b_and(old.podFlags2, b_lshift(1, 6)) == 0 then
-            vars.cntDeath = vars.cntDeath + 1 
+            vars.valDC = vars.valDC + 1 
         end
         if vars.inRace == 1 and current.podHeat == 0 and old.podHeat > 0 and
         b_and(current.podFlags2, b_lshift(1, 6)) == 0 then
-            vars.cntOverHeat = vars.cntOverHeat + 1 
+            vars.valOHC = vars.valOHC + 1 
         end
-            vars.infoDC = (vars.cntDeath > 0) and vars.cntDeath or "0" 
-            vars.infoOHC = (vars.cntOverHeat > 0) and 
-                vars.cntOverHeat or "0" 
+            vars.viewableDC = (vars.valDC > 0) and vars.valDC or "0" 
+            vars.viewableOHC = (vars.valOHC > 0) and 
+                vars.valOHC or "0" 
     end
     if sets.timeMethod == 0 or sets.viewTermStats then
         -- When entering race
         if current.inRace == 1 and old.inRace == 0 then
             vars.inRace = 1
-            vars.infoRIGT = sets.viewTermStats and 
-                "0.00" or vars.infoRIGT 
+            vars.viewableRIGT = sets.viewTermStats and 
+                "0.00" or vars.viewableRIGT 
         end
         -- Format current race in-game time
         vars.gtAdd = (vars.inRace == 1 and 
         b_and(current.podFlags8, b_lshift(1, 1)) == 0) and 
             current.raceTime or 0
-            vars.infoRIGT = (sets.viewTermStats and 
+            vars.viewableRIGT = (sets.viewTermStats and 
             (vars.gtAdd > 0)) and 
-                formatTime(vars.gtAdd) or vars.infoRIGT
+                formatTime(vars.gtAdd) or vars.viewableRIGT
         -- Handle race completion
         if ((b_and(current.podFlags8, b_lshift(1, 1)) ~= 0 and 
         b_and(old.podFlags8, b_lshift(1, 1)) == 0) or
         (current.inRace == 0 and old.inRace == 1 and vars.inRace ~= 0)) then
-                vars.infoRIGT = sets.viewTermStats and 
-                    formatTime(current.raceTime) or vars.infoRIGT
+                vars.viewableRIGT = sets.viewTermStats and 
+                    formatTime(current.raceTime) or vars.viewableRIGT
             vars.gt = vars.gt + current.raceTime
             vars.gtAdd = 0
             vars.inRace = 0
         end
-        vars.infoTRIGT = formatTime(vars.gt + vars.gtAdd)
+        vars.viewableTRIGT = formatTime(vars.gt + vars.gtAdd)
     end
 end
 
@@ -319,10 +327,10 @@ end
 function start()
     -- Reset all counters and variables
     if sets.viewTermStats then 
-        vars.infoRIGT = "0.00"
-        vars.infoTRIGT = "0.00"
-        vars.infoOHC = "0"
-        vars.infoDC = "0"
+        vars.viewableRIGT = "0.00"
+        vars.viewableTRIGT = "0.00"
+        vars.viewableOHC = "0"
+        vars.viewableDC = "0"
     end
     vars.gt = 0
     vars.gtAdd = 0
