@@ -1,6 +1,6 @@
 --[[
   Star Wars Episode I Racer Autosplitter (for LibreSplit) by Wuzzmi
-  https://github.com/Wuzzmi/swe1r-autosplitter
+  https://github.com/Wuzzmi/swe1r-autosplitter-libresplit
    * Based on Galeforce's LiveSplit Autosplitter v0.5.1
      https://github.com/everalert/swe1r-autosplitter
 
@@ -9,15 +9,24 @@
    * Auto split at race finish, with toggle for 1st place requirement
    * Optional auto reset, on return to file selection
    * Optional run category presets
-   * Choose between IGT, LRT and RTA timing methods
+   * Choice of IGT, LRT and RTA timing methods
    * Option to remove unfocused/tabbed-out time
    * Option to view extra stats in terminal
   
    USING THIS SCRIPT
    * Adjust the in script settings (below) 
-   * Right click in LibreSplit, select "Open Auto Splitter", choose the script 
-   * Check "Enable Auto Splitter"
-   * Run the Star Wars Racer
+   * Right click in LibreSplit, check "Enable Auto Splitter"
+   * Right click again, select "Open Auto Splitter"
+   * Now select the script and hit "Open"
+   * Run Star Wars Racer
+
+   POSSIBLE FUTURE IMPROVMENTS
+   * Determine a proper memory address for triggering the timer on "START RACE" 
+     selection (currently relying on sceneID, not ideal).
+   * Add option for each individual race time (idealy with individual lap times) 
+     to be printed in terminal at the end of a run.
+   * Possible addition of more terminal stats. The source ASL script seems to have 
+     a number of semi completed viewable stats in the process of being added.
 
 ---------------------------- SETTINGS BASICS ---------------------------------
         To set your run category, adjust the value of the [preset] setting
@@ -30,6 +39,9 @@
     values, are displayed in the box on the right side of settings. If your 
     preset overrides a prefered setting, set [preset = 0,] and ensure all other 
     settings are set correctly. 
+
+    See the github README for more indepth details on each setting and more.
+    https://github.com/Wuzzmi/swe1r-autosplitter-libresplit
 --]]
 
 process("SWEP1RCR.EXE")
@@ -45,25 +57,25 @@ local sets = {
 -- TIMING METHOD  -->In race GT | RT No Loads | Real Time | [1,2,3] = [1](LRT)
    timeMethod = 1,--> [0](IGT)  |   [1](LRT)  | [2+](RTA) |      
 ----------------------------------------------------------|-------------------
--- REQUIRES 1ST PLACE, or if [false] requires 4th place,  |     [2] = [true]
+-- REQUIRES 1ST PLACE, If [false] requires 4th place,     |     [2] = [true]
    req1st = false, --  and 3rd on SMR/BB/BEC              |   [1,3] = [false] 
 ----------------------------------------------------------|-------------------
--- "START RACE" TIMER TRIGGER (SEMIFUNCTIONAL) - Move     |
+-- "START RACE" TIMER TRIGGER (Semifunctional) - Move     |
    trigSR = false, -- from "Track Select" > "START RACE"  |   [1,2] = [false] 
 ----------------------------------------------------------|-------------------
--- ENABLE RESET TRIGGER - triggers at file selection.     |      
-   reset = true, -- [false] for mid-run file switch.      |     [3] = [false]
+-- ENABLE RESET TRIGGER - Triggers at file selection.     |      
+   reset = true, -- set [false] if switching mode mid-run.|     [3] = [false]
 ----------------------------------------------------------\___________________
--- REMOVE UNFOCUSED TIME (TABBED OUT) requires RT No Loads 
-   noTab = false, -- Affects all presets [timeMethod = 1]
+-- REMOVE UNFOCUSED TIME (Tabbed-Out Time) Requires RT No Loads. 
+   noTab = false, -- Only affects LRT [timeMethod = 1], thus all presets. 
 ------------------------------------------------------------------------------
 -- VIEW EXTRA STATS IN TERMINAL (when LibreSplit is run through the terminal).
-   viewTermStats = false, -- Toggles the view of the following extra info.
+   viewTermStats = false, -- Toggles the view of the following extra stats.
 --  --  -VIEWABLE STATS  --  --  --  --  --  --  --  --  --  --  --  --  --  -
                 viewIGT = true, -- Total race IGT
          viewCurRaceIGT = false, -- Current race IGT
-          viewOverheats = true, -- Counts overheats over whole run
-             viewDeaths = true, -- Counts viewDeaths over whole run
+          viewOverheats = true, -- Counts overheats over the whole run
+             viewDeaths = true, -- Counts deaths over the whole run
 --____________________________________________________________________________
 ------------------------------------------------------------------------------
 }
