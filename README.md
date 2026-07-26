@@ -181,7 +181,7 @@ viewTermStats = false,
 ```
 **```viewTermStats```** toggles the viewing of your enabled stats in the terminal. **```viewTermStats```** has no effect unless you are running LibreSplit through the terminal, so keep **```false```** if not. This is not ideal, but is currently the best option. LiveSplit's "[ASL variable viewer](https://github.com/hawkerm/LiveSplit.ASLVarViewer)" plugin allows these stats to be viewed in [LiveSplit](https://github.com/LiveSplit/LiveSplit) (there is no LibreSplit alternative).   
   
-Each stat is set the same way as **```viewTermStats```**.  
+**```viewTermStats```** and each stat is set the same way.  
 Like in this table:
   
 |  | Enabled | Disabled |
