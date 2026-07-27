@@ -1,3 +1,10 @@
+> [!caution]
+> **SCRIPT CURRENTLY BUGGED!**
+> * Auto reset fails amongst other bugs..
+>    
+> Yesterday auto reset was working like normal, like it had been for at least the past week and a half. I teseted some runs today, the script fails to reset on trigger. I reverted to previous versions of the script that had a functioning auto reset, and I experienced the exact same bugs. WTF?
+>   
+> Hope to sort this out shortly.
 # STAR WARS RACER AUTOSPLITTER (for LibreSplit)
 **A script that automates LibreSplit's timer, for Star Wars Episode I Racer speedruns.**  
 Based on [Galeforce's LiveSplit Autosplitter](https://github.com/everalert/swe1r-autosplitter) v0.5.1  
