@@ -51,7 +51,7 @@ local sets = {
 --------------------------- AUTOSPLITTER SETTINGS ----------------------------
 --____________________________________________________________________________
 -- CHOOSE RUN CATEGORY --> None | Any%/Amateur/Semi | 100% | New Game+ |
-   preset = 0,         --> [0]  |        [1]        | [2]  |    [3]    |
+   preset = 1,         --> [0]  |        [1]        | [2]  |    [3]    |
 --______________________________|___________________|______|___________|______
 ----------------------------------------------------------|  PRESET = SETS
 -- TIMING METHOD  -->In race GT | RT No Loads | Real Time | [1,2,3] = [1](LRT)
@@ -60,8 +60,8 @@ local sets = {
 -- REQUIRES 1ST PLACE, If [false] requires 4th place,     |     [2] = [true]
    req1st = false, --  and 3rd on SMR/BB/BEC              |   [1,3] = [false] 
 ----------------------------------------------------------|-------------------
--- "START RACE" TIMER TRIGGER (Semifunctional) - Move     |
-   trigSR = true, -- from "Track Select" > "START RACE"  |   [1,2] = [false] 
+-- "START RACE" TIMER TRIGGER (Semifunctional) - Move     |     [3] = [true]
+   trigSR = false, -- from "Track Select" > "START RACE"  |   [1,2] = [false] 
 ----------------------------------------------------------|-------------------
 -- ENABLE RESET TRIGGER - Triggers at file selection.     |      
    reset = true, -- set [false] if switching mode mid-run.|     [3] = [false]
@@ -82,13 +82,9 @@ local sets = {
 -- preset overrides 
 if sets.preset ~= 0 then 
     sets.timeMethod = 1
-    if sets.preset == 2 then
-        sets.req1st = true
-        sets.trigSR = false
-    elseif sets.preset == 3 then
-        sets.req1st = false
-        sets.trigSR = true
-    end
+    sets.req1st = sets.preset == 2 and true or false
+    sets.trigSR = sets.preset == 3 and true or false
+    sets.reset = sets.preset == 3 and false or sets.reset
 end
 
 local current = {
@@ -198,22 +194,22 @@ local function formatTime(seconds)
 end
 
 function update()
-    -- DEBUG VALUE PRINTING
-    for i, tbl in ipairs({sets, current, vars}) do
-        if i == 1 then
-            print('\n---------------------------\n      SETTINGS\n---------------------------')
-        elseif i == 2 then
-            print('\n---------------------------\n      ADDRESS VALUES\n---------------------------')
-        elseif i == 3 then
-            print('\n---------------------------\n      VARIABLE VALUES\n---------------------------')
-        end
-        for k, v in pairs(tbl) do
-            if type(v) ~= "string" then 
-                v = tostring(v)
-            end
-            print (k .. " = " .. v)
-        end
-    end
+    -- -- DEBUG VALUE PRINTING
+    -- for i, tbl in ipairs({sets, current, vars}) do
+    --     if i == 1 then
+    --         print('\n---------------------------\n      SETTINGS\n---------------------------')
+    --     elseif i == 2 then
+    --         print('\n---------------------------\n      ADDRESS VALUES\n---------------------------')
+    --     elseif i == 3 then
+    --         print('\n---------------------------\n      VARIABLE VALUES\n---------------------------')
+    --     end
+    --     for k, v in pairs(tbl) do
+    --         if type(v) ~= "string" then 
+    --             v = tostring(v)
+    --         end
+    --         print (k .. " = " .. v)
+    --     end
+    -- end
 
     -- View terminal info
     if sets.viewTermStats then
@@ -287,6 +283,8 @@ function isLoading()
         else
             return vars.loading > 0 
         end
+    elseif sets.timeMethod ~= 0 then
+        return false
     else
         return true  -- Always loading if not using load removal
     end
