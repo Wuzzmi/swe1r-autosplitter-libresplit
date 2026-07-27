@@ -3,6 +3,11 @@
 Based on [Galeforce's LiveSplit Autosplitter](https://github.com/everalert/swe1r-autosplitter) v0.5.1  
 The same autosplitter logic, converted to Lua, with some additions/compatibility changes.
 
+> [!caution]
+> Upgrading to ```luajit version 2.1.1785005726+a471ab7-1``` breaks either this script or LibreSplit it's self. Auto reset fails along with a number of other bugs. Reverting back to an older version of luajit will fix this.
+>   
+> I can confirm that ```luajit version 2.1.1784580905+2460b3f-1``` is working correctly. 
+
 > [!note]
 > Unlike [LiveSplit](https://github.com/LiveSplit/LiveSplit), [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main) currently has no support for managing autosplitter settings. Viewing extra stats like LiveSplit can with the "[ASL variable viewer](https://github.com/hawkerm/LiveSplit.ASLVarViewer)" plugin, is also not supported. As a solution for these differences, this script utilizes in script settings, and the ability to print these stats in the terminal.
   
