@@ -73,7 +73,7 @@ local sets = {
    viewTermStats = false, -- Toggles the view of the following extra stats.
 --  --  -VIEWABLE STATS  --  --  --  --  --  --  --  --  --  --  --  --  --  -
                 viewIGT = true, -- Total race IGT
-         viewCurRaceIGT = true, -- Current race IGT
+         viewCurRaceIGT = false, -- Current race IGT
           viewOverheats = true, -- Counts overheats over the whole run
              viewDeaths = true, -- Counts deaths over the whole run
 --____________________________________________________________________________
