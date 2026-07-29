@@ -87,7 +87,7 @@ local function isValid(setting, values, default)
     end
     return default
 end
--- Sets default setting value if a setting values invalid
+-- Sets a setting value to its default value, if its value was invalid
 sets.preset         = isValid(sets.preset,         {0, 1 ,2, 3},  0)
 sets.timeMethod     = isValid(sets.timeMethod,     {0, 1, 2},     1)
 sets.req1st         = isValid(sets.req1st,         {true, false}, false)
