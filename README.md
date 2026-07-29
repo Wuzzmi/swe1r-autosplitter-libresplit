@@ -1,13 +1,3 @@
-> [!caution]
-> **This script is currently bugged!**  
-> A number of features aren't working correctly, or at all.
-> * I remember, but am not totally certain that the script was working properly up until July 26th.
-> * I thought the cause was a luajit update. It seems to correct the issues when reverting luajit versions, but not all the time. Cannot reproduce consistantly.
-> * I tried using older script versions that I remember working. They all have the same bugs.
-> * Don't see how this is a LibreSplit issue since I am using a local build?
-> * Will continue to check things out on my end
-> * I will fix this (if it is on my end) when I am able.
-
 # STAR WARS RACER AUTOSPLITTER (for LibreSplit)
 **A script that automates LibreSplit's timer, for Star Wars Episode I Racer speedruns.**  
 Based on [Galeforce's LiveSplit Autosplitter](https://github.com/everalert/swe1r-autosplitter) v0.5.1  
@@ -183,6 +173,10 @@ Use **```noTab```** to set unfocused/tabbed-out time to registered as loading ti
 |  | Tabbed Time Removed | Tabbed Time Counted |
 |:---:|:---:|:---:|
 |**noTab =**| true | false |
+> [!warning]
+> While **```noTab == true```** if you right click in LibreSplit and click reload, you will trigger a bug!
+> This bug seems to invert loading time. So if the timer would normally be running it will not run, but will run while in a loading screen or while tabbed-out.
+> If this happens you will need to fully disable and enable the script in LibreSplit.
 
 ___
 ### VIEW EXTRA STATS IN TERMINAL
