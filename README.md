@@ -120,15 +120,15 @@ ___
 ```lua
 timeMethod = 1,
 ```
-Use **```timeMethod```** to choose either IGT, LRT or RTA. As shown in the table below, every category **```preset```** overrides to LRT (**```timeMethod = 1,```**). The other timing methods are not useful for recording official runs, but are there if you find a use for them.
+Use **```timeMethod```** to choose either RTA, LRT or IGT. As shown in the table below, every category **```preset```** overrides to LRT (**```timeMethod = 1,```**). The other timing methods are not useful for recording official runs, but are there if you find a use for them.
 
-|  | In race Game Time (IGT) | Real Time No loads (LRT) | Real Time (RTA) |
+|  | Real Time (RTA) | Real Time No loads (LRT) | In race Game Time (IGT) |
 |:---:|:---:|:---:|:---:|
-|**timeMethod =**| 0 | 1 | 2+ |
+|**timeMethod =**| 0 | 1 | 2 |
 | **```preset```** |  | **```1``` ```2``` ```3```** |  |
 
- > [!note]
-> RTA will be used to if **```timeMethod```** is set to any number other than **```0```** or **```1```**, not just **```2```**.
+ > [!warning]
+> While using **```timerMethod = 2```** IGT, if you right click in LibreSplit and select reload, you will trigger a bug. This bug will make your run act as a RTA run, until you trigger a reset through either hitting the "reset timer" keybind, triggering an auto reset, or fully restarting LibreSplit.
 ___
 ### REQUIRE 1ST PLACE
 ```lua
@@ -174,9 +174,9 @@ Use **```noTab```** to set unfocused/tabbed-out time to registered as loading ti
 |:---:|:---:|:---:|
 |**noTab =**| true | false |
 > [!warning]
-> While **```noTab == true```** if you right click in LibreSplit and click reload, you will trigger a bug!
-> This bug seems to invert loading time. So if the timer would normally be running it will not run, but will run while in a loading screen or while tabbed-out.
-> If this happens you will need to fully disable and enable the script in LibreSplit.
+> While using **```noTab```**, if you use LibreSplits "reset timer" keybind, or right click in LibreSplit and click reload, you will trigger a bug!
+> This bug seems to invert loading/tabbed-out time. So if the timer would normally be running it will not run, but will run while in a loading screen or while tabbed-out.
+> If this happens you will need to trigger an auto restart, or fully restart  LibreSplit if **```reset = false```**. 
 
 ___
 ### VIEW EXTRA STATS IN TERMINAL
