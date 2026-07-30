@@ -11,7 +11,7 @@ The same autosplitter logic, converted to Lua, with some additions/compatibility
 * Auto split at race finish, with toggle for 1st place requirement
 * Optional auto reset, on return to file selection
 * Optional run category presets
-* Choice of IGT, LRT and RTA timing methods 
+* Choice of LRT, or IGT timing methods 
 * Option to remove unfocused/tabbed-out time
 * Option to view extra stats in terminal
 
@@ -41,11 +41,11 @@ local sets = {
 --------------------------- AUTOSPLITTER SETTINGS ----------------------------
 --____________________________________________________________________________
 -- CHOOSE RUN CATEGORY --> None | Any%/Amateur/Semi | 100% | New Game+ |
-   preset = 0,         --> [0]  |        [1]        | [2]  |    [3]    |
+   preset = 1,         --> [0]  |        [1]        | [2]  |    [3]    |
 --______________________________|___________________|______|___________|______
 ----------------------------------------------------------|  PRESET = SETS
--- TIMING METHOD  --> Real Time | RT No Loads | In Race GT| [1,2,3] = [1](LRT)
-   timeMethod = 1,--> [0](RTA)  |   [1](LRT)  |  [2]IGT)  |      
+-- TIMING METHOD  --> | In Game Time | Real Time No Loads | 
+   useIGT = false,--> |     true     |       false        | [1,2,3] = [false] 
 ----------------------------------------------------------|-------------------
 -- REQUIRES 1ST PLACE, If [false] requires 4th place,     |     [2] = [true]
    req1st = false, --  and 3rd on SMR/BB/BEC              |   [1,3] = [false] 
@@ -54,17 +54,17 @@ local sets = {
    trigSR = false, -- from "Track Select" > "START RACE"  |   [1,2] = [false] 
 ----------------------------------------------------------|-------------------
 -- ENABLE RESET TRIGGER - Triggers at file selection.     |      
-   reset = true, -- set [false] if switching mode mid-run.|     [3] = [false]
+   reset = false, -- set [false] if switching mode mid-run|     [3] = [false]
 ----------------------------------------------------------\___________________
 -- REMOVE UNFOCUSED TIME (Tabbed-Out Time) Requires RT No Loads. 
-   noTab = true, -- Only affects LRT [timeMethod = 1], thus all presets. 
+   noTab = false, -- Only affects LRT [useIGT = false], thus all presets. 
 ------------------------------------------------------------------------------
 -- VIEW EXTRA STATS IN TERMINAL (when LibreSplit is run through the terminal).
    viewTermStats = false, -- Toggles the view of the following extra stats.
 --  --  -VIEWABLE STATS  --  --  --  --  --  --  --  --  --  --  --  --  --  -
                 viewIGT = true, -- Total race IGT
-         viewCurRaceIGT = true, -- Current race IGT
-          viewOverheats = true, -- Counts overheats over the whole run
+         viewCurRaceIGT = false, -- Current race IGT
+          viewOverheats = false, -- Counts overheats over the whole run
              viewDeaths = true, -- Counts deaths over the whole run
 --____________________________________________________________________________
 ------------------------------------------------------------------------------
@@ -118,17 +118,17 @@ preset = 1,
 ___
 ### TIMING METHOD
 ```lua
-timeMethod = 1,
+useIGT = false,
 ```
-Use **```timeMethod```** to choose either RTA, LRT or IGT. As shown in the table below, every category **```preset```** overrides to LRT (**```timeMethod = 1,```**). The other timing methods are not useful for recording official runs, but are there if you find a use for them.
+Use **```useIGT```** to choose either LRT, or IGT. As shown in the table below, every category **```preset```** overrides to LRT (**```useIGT = false,```**). IGT is not useful for recording official runs, but is there if you have a use for them.
 
-|  | Real Time (RTA) | Real Time No loads (LRT) | In race Game Time (IGT) |
-|:---:|:---:|:---:|:---:|
-|**timeMethod =**| 0 | 1 | 2 |
-| **```preset```** |  | **```1``` ```2``` ```3```** |  |
+|  | In race Game Time (IGT) | Real Time No loads (LRT) |
+|:---:|:---:|:---:|
+|**useIGT =**| true | false |
+| **```preset```** |  | **```1``` ```2``` ```3```** |
 
  > [!warning]
-> While using **```timerMethod = 2```** IGT, if you right click in LibreSplit and select reload, you will trigger a bug. This bug will make your run act as a RTA run, until you trigger a reset through either hitting the "reset timer" keybind, triggering an auto reset, or fully restarting LibreSplit.
+> While using IGT, if you right click in LibreSplit and select reload, you will trigger a bug. This bug will make your run act as a RTA run! To fix this, trigger a reset with the "reset timer" keybind, trigger an auto reset (if **```reset = true```**), or fully restart LibreSplit.
 ___
 ### REQUIRE 1ST PLACE
 ```lua
@@ -169,14 +169,14 @@ ___
 ```lua
 noTab = false,
 ```
-Use **```noTab```** to set unfocused/tabbed-out time to registered as loading time, so it will not be counted on the timer. **```noTab```** will only take effect if **```timeMethod = 1,``` (LRT)** is set (most cases). Otherwise unfocused/tabbed-out time will be counted like normal. Usage of **```noTab```** is up to you.
+Use **```noTab```** to set unfocused/tabbed-out time to registered as loading time, so it will not be counted on the timer. **```noTab```** will only take effect if **```useIGT = 1,``` (LRT)** is set (most cases). Otherwise unfocused/tabbed-out time will be counted like normal. Usage of **```noTab```** is up to you.
 |  | Tabbed Time Removed | Tabbed Time Counted |
 |:---:|:---:|:---:|
 |**noTab =**| true | false |
 > [!warning]
-> While using **```noTab```**, if you use LibreSplits "reset timer" keybind, or right click in LibreSplit and click reload, you will trigger a bug!
-> This bug seems to invert loading/tabbed-out time. So if the timer would normally be running it will not run, but will run while in a loading screen or while tabbed-out.
-> If this happens you will need to trigger an auto restart, or fully restart  LibreSplit if **```reset = false```**. 
+> While using **```noTab```**, if you use LibreSplits "Reset Timer" keybind, or right click in LibreSplit and click reload, you will trigger a bug!
+> This bug seems to invert loading/tabbed-out time. So if the timer would normally be running it will not, but will run while in a loading screen or while tabbed-out.
+> If this happens you will need to trigger an auto reset (if **```reset = true```**), or fully restart LibreSplit. 
 
 ___
 ### VIEW EXTRA STATS IN TERMINAL
@@ -214,6 +214,8 @@ ___
 viewOverheats = true,
 ```
 **```viewOverheats```** shows how many times you have overheated during your run.
+> [!warning]
+> **```viewOverheats```** is not totally accurate. It is possible that an overheat will be counted if a boost is cancelled within the last 0.2% of the boost. 
 ___
 **DEATH COUNT**
 ```lua
@@ -225,6 +227,7 @@ ___
 ## POSSIBLE FUTURE IMPROVMENTS
 * Determine a proper memory address for triggering the timer on "START RACE" selection (currently relying on sceneID, not ideal).
 * Add option for each individual race time (idealy with individual lap times) to be printed in terminal at the end of a run.
+* Fix/improve the accuacy of **```viewOverheats```** if possible.
 * Possible addition of more terminal stats. The source [ASL script](https://github.com/everalert/swe1r-autosplitter/blob/master/swe1r.asl) seems to have a number of semi completed viewable stats in the process of being added.
   
 ## LICENSE
