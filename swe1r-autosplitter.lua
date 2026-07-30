@@ -64,7 +64,7 @@ local sets = {
    trigSR = false, -- from "Track Select" > "START RACE"  |   [1,2] = [false] 
 ----------------------------------------------------------|-------------------
 -- ENABLE RESET TRIGGER - Triggers at file selection.     |      
-   reset = false, -- set [false] if switching mode mid-run.|     [3] = [false]
+   reset = false, -- set [false] if switching mode mid-run|     [3] = [false]
 ----------------------------------------------------------\___________________
 -- REMOVE UNFOCUSED TIME (Tabbed-Out Time) Requires RT No Loads. 
    noTab = false, -- Only affects LRT [useIGT = false], thus all presets. 
