@@ -50,22 +50,22 @@ local sets = {
 --____________________________________________________________________________
 --------------------------- AUTOSPLITTER SETTINGS ----------------------------
 --____________________________________________________________________________
--- CHOOSE RUN CATEGORY --> None | Any%/Amateur/Semi | 100% | New Game+ |
-   preset = 1,         --> [0]  |        [1]        | [2]  |    [3]    |
---______________________________|___________________|______|___________|______
+-- CHOOSE RUN CATEGORY -->| None | Any%/Amateur/Semi | 100% | All Tracks NG+ |
+   preset = 1,         -->| [0]  |        [1]        | [2]  |      [3]       |
+--________________________|______|___________________|______|________________|
 ----------------------------------------------------------|  PRESET = SETS
--- TIMING METHOD  --> | In Game Time | Real Time No Loads | 
-   useIGT = false,--> |     true     |       false        | [1,2,3] = [false] 
+-- TIMING METHOD   -->| In Game Time | Real Time No Loads | 
+   useIGT = false, -->|     true     |       false        | [1,2,3] = [false] 
 ----------------------------------------------------------|-------------------
 -- REQUIRES 1ST PLACE, If [false] requires 4th place,     |     [2] = [true]
    req1st = false, --  and 3rd on SMR/BB/BEC              |   [1,3] = [false] 
 ----------------------------------------------------------|-------------------
 -- "START RACE" TIMER TRIGGER (Semifunctional) - Move     |     [3] = [true]
    trigSR = false, -- from "Track Select" > "START RACE"  |   [1,2] = [false] 
-----------------------------------------------------------|-------------------
--- ENABLE RESET TRIGGER - Triggers at file selection.     |      
-   reset = false, -- set [false] if switching mode mid-run|     [3] = [false]
 ----------------------------------------------------------\___________________
+-- ENABLE RESET TRIGGER - Triggers at file selection.
+   reset = false, -- Ensure to set [false] if switching file/mode mid-run.
+------------------------------------------------------------------------------
 -- REMOVE UNFOCUSED TIME (Tabbed-Out Time) Requires RT No Loads. 
    noTab = false, -- Only affects LRT [useIGT = false], thus all presets. 
 ------------------------------------------------------------------------------
@@ -79,6 +79,7 @@ local sets = {
 --____________________________________________________________________________
 ------------------------------------------------------------------------------
 }
+
 -- Handles invalid preset value
 sets.preset = (sets.preset == 0 or 1 or 2 or 3) and sets.preset or 0
 -- Preset overrides 
@@ -86,7 +87,6 @@ if sets.preset ~= 0 then
     sets.useIGT = false
     sets.req1st = sets.preset == 2 and true or false
     sets.trigSR = sets.preset == 3 and true or false
-    sets.reset = sets.preset ~= 3 and sets.reset or false
 end
 local current = {
     raceTime = 0.0,
