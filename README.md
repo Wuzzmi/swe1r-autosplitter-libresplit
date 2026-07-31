@@ -4,35 +4,39 @@ Based on [Galeforce's LiveSplit Autosplitter](https://github.com/everalert/swe1r
 The same autosplitter logic, converted to Lua, with some additions/compatibility changes.
 
 > [!note]
+> This script is a work in progress. It includes all of the base functionalities required for all speedrun categories.
+>   
+> *\*\*Starred Features\*\** indicate that, that feature currently has a bug or some kind of caveat associated with it.
+>    
 > Unlike [LiveSplit](https://github.com/LiveSplit/LiveSplit), [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main) currently has no support for managing autosplitter settings. Viewing extra stats like LiveSplit can with the "[ASL variable viewer](https://github.com/hawkerm/LiveSplit.ASLVarViewer)" plugin, is also not supported. As a solution for these differences, this script utilizes in script settings, and the ability to print these stats in the terminal.
   
 ### FEATURES
-* Auto start when file is opened, or optionally when "Start Race" is selected 
+* Auto start when file is opened, or *\*\*optionally when "Start Race" is selected\*\**
 * Auto split at race finish, with toggle for 1st place requirement
 * Optional auto reset, on return to file selection
 * Optional run category presets
-* Choice of LRT, or IGT timing methods 
-* Option to remove unfocused/tabbed-out time
-* Option to view extra stats in terminal
+* Choice of LRT, or *\*\*IGT\*\** timing methods 
+* *\*\*Option to remove unfocused/tabbed-out time\*\**
+* *\*\*Option to view extra stats in terminal\*\**
 
 ### REQUIRES
 * [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main)
 * Star Wars Racer [JSON splits](https://github.com/Wuzzmi/swe1r-splits-libresplit/tree/master), or [converted](https://libresplit.org/converter) LSS splits
 * Installation of the re-released PC version of Star Wars Episode I Racer (Steam, GOG, etc.)  
     - does not work with the original CD version
-
-## TLDR (Advanced Users)
+___
+## SETUP TLDR (Advanced Users)
 * Edit the **in script** settings, under **"AUTOSPLITTER SETTINGS"**
 * Load and Enable the script in LibreSplit
 * Run Star Wars Racer
-___
+
 ## SETUP
 * [Download](https://github.com/Wuzzmi/swe1r-autosplitter-libresplit/archive/refs/heads/main.zip) and extract the autosplitter
 * Place either the extracted folder, or just "swe1r-autosplitter.lua", where you prefer
   * commonly in: ```~/.config/libresplit/auto-splitters/```
 * Open "swe1r-autosplitter.lua" in a text editor
    
-At the top there are script notes, followed by a small settings guide, and under that will be the "AUTOSPLITTER SETTING". 
+At the top of the script there are notes, followed by a small settings guide, and under that will be the "AUTOSPLITTER SETTING". 
 
 ### AUTOSPLITTER SETTINGS
 ```lua
@@ -40,12 +44,12 @@ local sets = {
 --____________________________________________________________________________
 --------------------------- AUTOSPLITTER SETTINGS ----------------------------
 --____________________________________________________________________________
--- CHOOSE RUN CATEGORY --> None | Any%/Amateur/Semi | 100% | New Game+ |
-   preset = 1,         --> [0]  |        [1]        | [2]  |    [3]    |
---______________________________|___________________|______|___________|______
+-- CHOOSE RUN CATEGORY -->| None | Any%/Amateur/Semi | 100% | All Tracks NG+ |
+   preset = 1,         -->| [0]  |        [1]        | [2]  |      [3]       |
+--________________________|______|___________________|______|________________|
 ----------------------------------------------------------|  PRESET = SETS
--- TIMING METHOD  --> | In Game Time | Real Time No Loads | 
-   useIGT = false,--> |     true     |       false        | [1,2,3] = [false] 
+-- TIMING METHOD   -->| In Game Time | Real Time No Loads | 
+   useIGT = false, -->|     true     |       false        | [1,2,3] = [false] 
 ----------------------------------------------------------|-------------------
 -- REQUIRES 1ST PLACE, If [false] requires 4th place,     |     [2] = [true]
    req1st = false, --  and 3rd on SMR/BB/BEC              |   [1,3] = [false] 
@@ -70,7 +74,7 @@ local sets = {
 ------------------------------------------------------------------------------
 }
 ```
-Here is where all settings can be modified. The script settings include a minimal description of each option, this should be enough to work with. For most cases **```preset```** is the only setting that will need to be adjusted.  
+Here is where all settings can be modified. The script settings include a minimal description of each option, this should be enough to work with. In most cases **```preset```** is the only setting that requires adjustment.  
   
 > [!caution]
 > ```lua
@@ -128,7 +132,9 @@ Use **```useIGT```** to choose either LRT, or IGT. As shown in the table below, 
 | **```preset```** |  | **```1``` ```2``` ```3```** |
 
  > [!warning]
-> While using IGT, if you right click in LibreSplit and select reload, you will trigger a bug. This bug will make your run act as a RTA run! To fix this, trigger a reset with the "reset timer" keybind, trigger an auto reset (if **```reset = true```**), or fully restart LibreSplit.
+> ***\*\*BUG\*\****
+>   
+> While **```useIGT = true```**, if you right click in LibreSplit and select reload, you will trigger a bug. This bug will make your run act as a RTA run! To fix this, trigger a reset with the "reset timer" keybind, trigger an auto reset (if **```reset = true```**), or fully restart LibreSplit.
 ___
 ### REQUIRE 1ST PLACE
 ```lua
@@ -151,14 +157,16 @@ trigSR = false,
 |**trigSR =**| true | false |
 | **```preset```** | **```3```** | **```1``` ```2```** |
 > [!important]
-> Currently the "Start Race" trigger is semifunctional. In order for the timer to trigger, you must enter the track selection scene, then move directly to select "Start Race". If you deviate, just return to the track selection scene before heading to "Start Race". 
+> ***\*\*SEMIFUNCTIONAL\*\****
+>   
+> Currently for the timer to trigger, you must enter the track selection scene, then move directly to select "Start Race". If you deviate, just return to the track selection scene before heading to "Start Race". 
 
 ___
 ### ENABLE RESET TRIGGER
 ```lua
-reset = true,
+reset = false,
 ```
-**```reset```** toggles auto reset on/off. It is very important to set **```reset = false```** for NG+ runs that require a file/mode change mid run. This stops file/mode changes from resetting and ruining the run, which is why the NG+ **```preset```** overrides to **```reset = false```**. If your NG+ run doesn't need a file/mode change, and you would like to use **```reset```**, you will have to set **```preset = 0```** and manually set all settings. Aside from NG+ runs, **```reset```** is just personal preference.
+**```reset```** toggles auto reset on/off. It is important to use **```reset = false```** for All Tracks NG+ runs that require a file/mode change mid run. This stops file/mode changes from resetting and ruining the run. Aside from All Tracks NG+ runs, **```reset```** is just personal preference.
 |  | Auto Reset On | Auto Reset Off |
 |:---:|:---:|:---:|
 |**reset =**| true | false |
@@ -169,12 +177,14 @@ ___
 ```lua
 noTab = false,
 ```
-Use **```noTab```** to set unfocused/tabbed-out time to registered as loading time, so it will not be counted on the timer. **```noTab```** will only take effect if **```useIGT = 1,``` (LRT)** is set (most cases). Otherwise unfocused/tabbed-out time will be counted like normal. Usage of **```noTab```** is up to you.
+Use **```noTab```** to set unfocused/tabbed-out time to registered as loading time, so it will not be counted on the timer. **```noTab```** will only take effect if **```useIGT = false,```** is set (this is most cases). Otherwise unfocused/tabbed-out time will be counted like normal. Usage of **```noTab```** is up to you.
 |  | Tabbed Time Removed | Tabbed Time Counted |
 |:---:|:---:|:---:|
 |**noTab =**| true | false |
 > [!warning]
-> While using **```noTab```**, if you use LibreSplits "Reset Timer" keybind, or right click in LibreSplit and click reload, you will trigger a bug!
+> ***\*\*BUG\*\****
+>  
+> While **```noTab = true```**, if you use LibreSplits "Reset Timer" keybind, or right click in LibreSplit and click reload, you will trigger a bug!
 > This bug seems to invert loading/tabbed-out time. So if the timer would normally be running it will not, but will run while in a loading screen or while tabbed-out.
 > If this happens you will need to trigger an auto reset (if **```reset = true```**), or fully restart LibreSplit. 
 
@@ -185,7 +195,7 @@ viewTermStats = false,
 ```
 **```viewTermStats```** toggles the viewing of your enabled stats in the terminal. **```viewTermStats```** has no effect unless you are running LibreSplit through the terminal, so keep **```false```** if not. This is not ideal, but is currently the best option. LiveSplit's "[ASL variable viewer](https://github.com/hawkerm/LiveSplit.ASLVarViewer)" plugin allows these stats to be viewed in [LiveSplit](https://github.com/LiveSplit/LiveSplit) (there is no LibreSplit alternative).   
   
-**```viewTermStats```** and each stat is set the same way.  
+Each stat is set the same way as **```viewTermStats```**.  
 Like in this table:
   
 |  | Enabled | Disabled |
@@ -211,11 +221,13 @@ viewCurRaceIGT = false,
 ___
 **OVERHEAT COUNT**
 ```lua
-viewOverheats = true,
+viewOverheats = false,
 ```
 **```viewOverheats```** shows how many times you have overheated during your run.
-> [!warning]
-> **```viewOverheats```** is not totally accurate. It is possible that an overheat will be counted if a boost is cancelled within the last 0.2% of the boost. 
+> [!important]
+> ***\*\*INACCURATE\*\****
+> 
+> **```viewOverheats```** is not totally accurate. Sometimes an overheat will be counted when a boost is cancelled within the last 0.2%. This stat maybe removed in the future, due to an indistinguishable grey area for determining if an overheat triggered or not. Use not recommended.
 ___
 **DEATH COUNT**
 ```lua
