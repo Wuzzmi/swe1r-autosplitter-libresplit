@@ -4,11 +4,11 @@ Based on [Galeforce's LiveSplit Autosplitter](https://github.com/everalert/swe1r
 The same autosplitter logic, converted to Lua, with some additions/compatibility changes.
 
 > [!note]
-> This script is a work in progress. It includes all of the base functionalities required for all speedrun categories.
+> This script includes all of the base functionalities required for all speedrun categories, but some extra features still have bugs/caveats, so is still a work in progress.
 >   
-> *\*\*Starred Features\*\** indicate that, that feature currently has a bug or some kind of caveat associated with it.
+> *\*\*Starred Features\*\** indicate that, that feature currently has a bug/caveat associated with it.
 >    
-> Unlike [LiveSplit](https://github.com/LiveSplit/LiveSplit), [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main) currently has no support for managing autosplitter settings. Viewing extra stats like LiveSplit can with the "[ASL variable viewer](https://github.com/hawkerm/LiveSplit.ASLVarViewer)" plugin, is also not supported. As a solution for these differences, this script utilizes in script settings, and the ability to print these stats in the terminal.
+> Unlike [LiveSplit](https://github.com/LiveSplit/LiveSplit), [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main) currently has no support for managing autosplitter settings. Viewing extra stats like LiveSplit does with the "[ASL variable viewer](https://github.com/hawkerm/LiveSplit.ASLVarViewer)" plugin, is also not supported. As a solution for these differences, this script utilizes in script settings, and the ability to print these stats in the terminal.
   
 ### FEATURES
 * Auto start when file is opened, or *\*\*optionally when "Start Race" is selected\*\**
