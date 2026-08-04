@@ -1,32 +1,27 @@
 --[[
   Star Wars Episode I Racer Autosplitter (for LibreSplit) by Wuzzmi
   https://github.com/Wuzzmi/swe1r-autosplitter-libresplit
-   * Based on Galeforce's LiveSplit Autosplitter v0.5.1
+   - Based on Galeforce's LiveSplit Autosplitter v0.5.1
      https://github.com/everalert/swe1r-autosplitter
 
   FEATURES
-   * Auto start when file is opened, or optionally when "Start Race" is selected
-   * Auto split at race finish, with toggle for 1st place requirement
-   * Optional auto reset, on return to file selection
-   * Optional run category presets
-   * Choice of LRT, or IGT timing methods
-   * Option to remove unfocused/tabbed-out time
-   * Option to view extra stats in terminal
+   - Auto start when file is opened, or **optionally when "Start Race" is selected**
+   - Auto split at race finish, with toggle for 1st place requirement
+   - Auto reset, with choice of reset location
+   - Optional run category presets
+   - Choice of LRT, or **IGT** timing methods
+   - **Option to remove unfocused/tabbed-out time**
   
    USING THIS SCRIPT
-   * Adjust the in script settings (below) 
-   * Right click in LibreSplit, check "Enable Auto Splitter"
-   * Right click again, select "Open Auto Splitter"
-   * Now select the script and hit "Open"
-   * Run Star Wars Racer
+   - Adjust the in script settings (below) 
+   - Load and enable this script in LibreSplit
+   - Run Star Wars Racer
 
    POSSIBLE FUTURE IMPROVMENTS
-   * Determine a proper memory address for triggering the timer on "START RACE" 
+   - Determine a proper memory address for triggering the timer on "START RACE" 
      selection (currently relying on sceneID, not ideal).
-   * Add option for each individual race time (idealy with individual lap times) 
+   - Add option for each individual race time (idealy with individual lap times) 
      to be printed in terminal at the end of a run.
-   * Possible addition of more terminal stats. The source ASL script seems to have 
-     a number of semi completed viewable stats in the process of being added.
 
 ---------------------------- SETTINGS BASICS ---------------------------------
         To set your run category, adjust the value of the [preset] setting
@@ -40,7 +35,7 @@
     preset overrides a prefered setting, set [preset = 0,] and ensure all other 
     settings are set correctly. 
 
-    See the github README for more indepth details on each setting and more.
+    See the github README for more indepth details on each setting.
     https://github.com/Wuzzmi/swe1r-autosplitter-libresplit
 --]]
 
@@ -50,44 +45,36 @@ local sets = {
 --____________________________________________________________________________
 --------------------------- AUTOSPLITTER SETTINGS ----------------------------
 --____________________________________________________________________________
--- CHOOSE RUN CATEGORY -->| None | Any%/Amateur/Semi | 100% | All Tracks NG+ |
-   preset = 1,         -->| [0]  |        [1]        | [2]  |      [3]       |
---________________________|______|___________________|______|________________|
+-- CATEGORY PRESET -->|  None  | Any%/Amateur/Semi |  100%  | All Tracks NG+ |
+   preset = 0,     -->|  [0]   |        [1]        |  [2]   |      [3]       |
+--____________________|________|___________________|________|________________|
 ----------------------------------------------------------|  PRESET = SETS
--- TIMING METHOD   -->| In Game Time | Real Time No Loads | 
-   useIGT = false, -->|     true     |       false        | [1,2,3] = [false] 
+-- TIMING METHOD        -->|   RT No Loads  |     IGT     | [1,2,3] = [true]
+   useRTNoLoads = true, -->|     [true]     |   [false]   |  
 ----------------------------------------------------------|-------------------
--- REQUIRES 1ST PLACE, If [false] requires 4th place,     |     [2] = [true]
-   req1st = false, --  and 3rd on SMR/BB/BEC              |   [1,3] = [false] 
+-- WIN CONDITION       -->|  1st   |  4th/3rd(SMR/BB/BEC) |     [2] = [true] 
+   require1st = false, -->| [true] |       [false]        |   [1,3] = [false]
 ----------------------------------------------------------|-------------------
--- "START RACE" TIMER TRIGGER (Semifunctional) - Move     |     [3] = [true]
-   trigSR = false, -- from "Track Select" > "START RACE"  |   [1,2] = [false] 
+-- AUTO START TRIGGER     -->| "START RACE" | File Select |     [3] = [false]
+   startRaceTrig = false, -->|    [true]    |   [false]   |   [1,2] = [true]
 ----------------------------------------------------------\___________________
--- ENABLE RESET TRIGGER - Triggers at file selection.
-   reset = false, -- Ensure to set [false] if switching file/mode mid-run.
+-- AUTO RESET AT: -->| None | File Select(risky) | Main Menu | Settings(safe)| 
+   autoReset = 2, -->| [0]  |         [1]        |    [2]    |      [3]      |
 ------------------------------------------------------------------------------
--- REMOVE UNFOCUSED TIME (Tabbed-Out Time) Requires RT No Loads. 
-   noTab = false, -- Only affects LRT [useIGT = false], thus all presets. 
-------------------------------------------------------------------------------
--- VIEW EXTRA STATS IN TERMINAL (when LibreSplit is run through the terminal).
-   viewTermStats = false, -- Toggles the view of the following extra stats.
---  --  -VIEWABLE STATS  --  --  --  --  --  --  --  --  --  --  --  --  --  -
-                viewIGT = true, -- Total race IGT
-         viewCurRaceIGT = false, -- Current race IGT
-          viewOverheats = false, -- Counts overheats over the whole run
-             viewDeaths = true, -- Counts deaths over the whole run
+-- TABBED-OUT TIME TREATMENT -->| Remove Tabbed Time | Count Tabbed Time |
+   removeTabbedTime = false, -->|       [true]       |      [false]      |
 --____________________________________________________________________________
 ------------------------------------------------------------------------------
 }
-
--- Handles invalid preset value
-sets.preset = (sets.preset == 0 or 1 or 2 or 3) and sets.preset or 0
 -- Preset overrides 
-if sets.preset ~= 0 then 
-    sets.useIGT = false
-    sets.req1st = sets.preset == 2 and true or false
-    sets.trigSR = sets.preset == 3 and true or false
+if sets.preset == 1 or 2 or 3 then 
+    sets.useRTNoLoads = true
+    sets.require1st = sets.preset == 2 and true or false
+    sets.startRaceTrig = sets.preset == 3 and true or false
+else
+    sets.preset = 0
 end
+
 local current = {
     raceTime = 0.0,
     racePos = 0,
@@ -112,34 +99,33 @@ local vars = {
     inRace = 0,
     loadBuffer = 0,
     loadBufferSize = 0,
-    loading = 0
+    loading = false
 }
--- Add terminal stats vars when term stats is enabled
-if sets.viewTermStats then
-    vars.valOHC = 0
-    vars.valDC = 0
-    vars.titleTRIGT = "IGT" 
-    vars.titleRIGT = "Current Race IGT" 
-    vars.titleOHC = "Overheat Count" 
-    vars.titleDC = "Death Count"
-    vars.viewableTRIGT = "0.00"
-    vars.viewableRIGT = "0.00"
-    vars.viewableOHC = "0"
-    vars.viewableDC = "0"
-end
-
-function startup()
-    useGameTime = sets.useIGT
-    refreshRate = 24 -- Starting point, will be calculated dynamically
-end
-
+-- If address is nil, sets it to 0 and prints alert
 local function nilGuard(value, idString)
     if value == nil then
         print( 
-        idString .. " has been set to 0. Can't use nil value.\n")
+        idString .. " has been set to 0. Cannot use nil value.\n")
         return 0
     end
     return value
+end
+-- Function to format time as string (h:mm:ss.ff)
+local function formatTime(seconds)
+    if seconds > 3600 then
+        return string.format("%d:%d:%05.2f", seconds / 3600, 
+        (seconds % 3600) / 60, seconds % 60)
+    elseif seconds > 60 then
+        return string.format("%d:%05.2f", seconds / 60, seconds % 60)
+    else
+        return string.format("%05.2f", seconds)
+    end
+end
+
+
+function startup()
+    useGameTime = not sets.useRTNoLoads
+    refreshRate = 24 -- Starting point, will be calculated dynamically
 end
 
 function state()
@@ -152,7 +138,7 @@ function state()
     current.gameTabbedOut = readAddress("byte", 0x10CB64)
     -- Limit string to 17 chars, sometimes odd chars are added at end 
     current.menTxt1 = string.sub (readAddress("string17", 0xA2C380), 1, 17)
--- Addresses assigned to 0 when nil(with print info)
+-- Nil guarded addresses, since they don't always hold a value, fixes bitwise errors
     current.selTrk = nilGuard(readAddress("byte", 0xBFDB8, 0x5D),
     "(0) [current.selTrk]")
     current.raceTime = nilGuard(readAddress("float", 0xD78A4, 0x74),
@@ -167,188 +153,103 @@ function state()
     "(5) [current.podHeat]")
 end
 
--- Prints title and value @ width(in chars) of viewable stat, if enabled
-local function termDisplay(title, value, condition)
-    local indent = string.rep(" ", 3)
-    local line = string.rep("_", 24) 
-    if condition then
-        print(    line .. "\n" .. 
-        indent .. title .. "\n" ..
-        indent .. value)
-    end
-end
-
--- Function to format time as string (h:mm:ss.ff)
-local function formatTime(seconds)
-    if seconds > 3600 then
-        return string.format("%d:%d:%05.2f", seconds / 3600, 
-        (seconds % 3600) / 60, seconds % 60)
-    elseif seconds > 60 then
-        return string.format("%d:%05.2f", seconds / 60, seconds % 60)
-    else
-        return string.format("%05.2f", seconds)
-    end
-end
-
-function onReset()
-    print(string.rep(string.rep("=", 33) .. "\n", 50))
-end
-
 function update()
-    -- DEBUG VALUE PRINTING
-    -- for i, tbl in ipairs({sets, current, vars}) do
-    --     if i == 1 then
-    --         print('SETTINGS')
-    --     elseif i == 2 then
-    --         print('ADDRESS VALUES')
-    --     elseif i == 3 then
-    --         print('VARIABLE VALUES')
-    --     end
-    --     for k, v in pairs(tbl) do
-    --         if type(v) ~= "string" then 
-    --             v = tostring(v)
-    --         end
-    --         print ("    " .. k .. " = " .. v)
-    --     end
-    -- end
-
-    -- View terminal info
-    if sets.viewTermStats then
-        print("\n")
-        termDisplay(vars.titleTRIGT, vars.viewableTRIGT, sets.viewIGT) 
-        termDisplay(vars.titleRIGT, vars.viewableRIGT, sets.viewCurRaceIGT) 
-        termDisplay(vars.titleOHC, vars.viewableOHC, sets.viewOverheats) 
-        termDisplay(vars.titleDC, vars.viewableDC, sets.viewDeaths) 
-        print("\n")
-    end
-    -- -- Dynamically update refresh rate based on frame time
+    -- Dynamically update refresh rate based on frame time
     refreshRate = current.frmLen > 0 and math.floor(1 / current.frmLen) or 24
-
-    if sets.useIGT or sets.viewTermStats then
-        -- When entering race
-        if (current.inRace == 1 and old.inRace == 0) then
-            vars.inRace = 1
-            vars.viewableRIGT = "0.00"
-        end
-        -- Format current race in-game time (in race real time update)
-        vars.gtAdd = (vars.inRace == 1 and 
-        b_and(current.podFlags8, b_lshift(1, 1)) == 0) and 
-            current.raceTime or 0
-        -- Handles majority of terminal stats
-        if sets.viewTermStats then
-            if (sets.viewCurRaceIGT and (vars.gtAdd > 0)) then
-                vars.viewableRIGT = formatTime(vars.gtAdd)
-            end
-            -- calculate and set death counter 
-            if sets.viewDeaths then
-                if b_and(current.podFlags2, b_lshift(1, 6)) ~= 0 and 
-                b_and(old.podFlags2, b_lshift(1, 6)) == 0 then
-                    vars.valDC = vars.valDC + 1 
-                end
-                vars.viewableDC = (vars.valDC > 0) and vars.valDC or "0"
-            end
-            -- Calculate and set overheat counter
-            if sets.viewOverheats then
-                if vars.inRace == 1 and 
-                -- was checking for 0 but was rarely being reached, 0.2 much better
-                current.podHeat < 0.2 and old.podHeat > 0.2 and 
-                b_and(current.podFlags2, b_lshift(1, 6)) == 0 then
-                    vars.valOHC = vars.valOHC + 1 
-                end
-                vars.viewableOHC = (vars.valOHC > 0) and vars.valOHC or "0"
-            end
-        end
-                    -- Handle race completion
-        if ((b_and(current.podFlags8, b_lshift(1, 1)) ~= 0 and 
-        b_and(old.podFlags8, b_lshift(1, 1)) == 0) or
-        (current.inRace == 0 and old.inRace == 1 and vars.inRace ~= 0)) then
-            if sets.viewTermStats and sets.viewCurRaceIGT then
-                vars.viewableRIGT = formatTime(current.raceTime)
-            end
-            vars.gt = vars.gt + current.raceTime
-            vars.gtAdd = 0
-            vars.inRace = 0
-            if sets.viewTermStats and sets.viewIGT then
-                vars.viewableTRIGT = formatTime(vars.gt + vars.gtAdd)
-            end
-        end
     end
-end
-
-function isLoading()
-    -- actual ingame isLoading bool unknown, detect loading based on frame counter with small dynamic buffer to account for framerate discrepancies
-    if not sets.useIGT then
-        vars.loadBufferSize = math.floor(old.frmLen / current.frmLen) + 2
-        vars.loadBuffer = (current.frmCnt == old.frmCnt) and 
-            (vars.loadBuffer + 1) or (vars.loadBuffer - 1)
-        if vars.loadBuffer <= 0 then
-            vars.loading = 0
-            vars.loadBuffer = 0
-        end
-        if vars.loadBuffer >= vars.loadBufferSize then
-            vars.loading = 1
-            vars.loadBuffer = vars.loadBufferSize
-        end
-        if not sets.noTab then
-            return (vars.loading > 0 and current.gameTabbedOut == 0)
-        else
-            return (vars.loading > 0)
-        end
-    else
-        return true
-    end
-end
-
-function gameTime()
-        return (vars.gt + vars.gtAdd) * 1000
-end
-
-function reset()
-    if sets.reset then
-        -- Reset when entering file select screen
-        return (current.menTxt1 == "~F6Current Player" or 
-        current.menTxt1 == "~F6~sSingle Playe")
-    end
-end
-
-function split()
-    -- Handle race finish
-    vars.raceDone = ((b_and(current.podFlags8, b_lshift(1, 1)) ~= 0) and 
-    (b_and(old.podFlags8, b_lshift(1, 1)) == 0))
-    if sets.req1st then
-        vars.winCond = (current.racePos == 1)
-    else
-        if current.selTrk == 17 or 
-        current.selTrk == 8 or 
-        current.selTrk == 1 then
-            vars.winCond = (current.racePos <= 3)
-        else
-            vars.winCond = (current.racePos <= 4)
-        end
-    end
-    return (vars.raceDone and vars.winCond)
-end
 
 function start()
-    -- Reset all counters and variables
-    if sets.viewTermStats then 
-        vars.viewableRIGT = "0.00"
-        vars.viewableTRIGT = "0.00"
-        vars.viewableOHC = "0"
-        vars.viewableDC = "0"
-    end
     vars.gt = 0
     vars.gtAdd = 0
     vars.inRace = 0
     vars.loadBuffer = 0
     vars.loadBufferSize = 0
-    -- determine start location
-    if not sets.trigSR then
-        return ((current.sceneId == 60 ) and 
-        current.menTxt1 ~= "~F6Current Player" and 
-        current.menTxt1 ~= "~F6~sSingle Playe")
+    -- Auto start trigger based on settings
+    if sets.startRaceTrig then
+        return current.sceneId == 0 and old.sceneId == 260
+    end
+    return current.menTxt1 == "~F6~sBack" and old.menTxt1 == "~F6Current Player"
+end
+
+function split()
+    -- Handle race finish
+    vars.raceDone = (b_and(current.podFlags8, b_lshift(1, 1)) ~= 0) and 
+    (b_and(old.podFlags8, b_lshift(1, 1)) == 0)
+    -- Split based on win condition setting
+    if sets.require1st then
+        vars.winCond = current.racePos == 1
     else
-        return (current.sceneId == 0 and 
-        old.sceneId == 260)
+        if current.selTrk == 17 or 
+        current.selTrk == 8 or 
+        current.selTrk == 1 then
+            vars.winCond = current.racePos <= 3
+        else
+            vars.winCond = current.racePos <= 4
+        end
+    end
+    return vars.raceDone and vars.winCond
+end
+
+function isLoading()
+    -- Actual ingame isLoading bool unknown. Detects loading based on frame 
+    -- counter with small dynamic buffer to account for framerate discrepancies
+    if sets.useRTNoLoads then
+        vars.loadBufferSize = math.floor(old.frmLen / current.frmLen) + 2
+        if current.frmCnt == old.frmCnt then
+            vars.loadBuffer = vars.loadBuffer + 1
+        else
+            vars.loadBuffer = vars.loadBuffer - 1
+        end
+        if vars.loadBuffer <= 0 then
+            vars.loading = false
+            vars.loadBuffer = 0
+        end
+        if vars.loadBuffer >= vars.loadBufferSize then
+            vars.loading = true
+            vars.loadBuffer = vars.loadBufferSize
+        end
+        -- Real Time - Loads and Unfocused Time Removed
+        if sets.removeTabbedTime then
+            return vars.loading
+        end
+        -- Real Time - Loads Removed 
+        return vars.loading and current.gameTabbedOut == 0
+    end
+    -- In Game Race Time
+    return true
+end
+
+function reset()
+    -- Determine auto reset trigger
+    if sets.autoReset == 1 then
+        return current.menTxt1 == "~F6Current Player"
+    elseif sets.autoReset == 2 then
+        return current.menTxt1 == "~F6~sSingle Playe"
+    elseif sets.autoReset == 3 then
+        return current.menTxt1 == "~F6~sVIDEO SETTIN"
     end
 end
+
+function gameTime()
+    -- Entering race
+    if current.inRace == 1 and old.inRace == 0 then
+        vars.inRace = 1
+    end
+    -- Current race in-game time 
+    if vars.inRace == 1 and (b_and(current.podFlags8, b_lshift(1, 1)) == 0) then
+        vars.gtAdd = current.raceTime
+    else
+        vars.gtAdd = 0    
+    end
+    -- Race completion
+    if (b_and(current.podFlags8, b_lshift(1, 1)) ~= 0 and 
+    b_and(old.podFlags8, b_lshift(1, 1)) == 0) or
+    (current.inRace == 0 and old.inRace == 1 and vars.inRace ~= 0) then
+        vars.gt = vars.gt + current.raceTime
+        vars.gtAdd = 0
+        vars.inRace = 0
+    end
+    -- IGT in milliseconds
+    return (vars.gt + vars.gtAdd) * 1000
+end
+
