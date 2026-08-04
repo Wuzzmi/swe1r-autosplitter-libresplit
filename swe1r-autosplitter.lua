@@ -17,12 +17,6 @@
    - Load and enable this script in LibreSplit
    - Run Star Wars Racer
 
-   POSSIBLE FUTURE IMPROVMENTS
-   - Determine a proper memory address for triggering the timer on "START RACE" 
-     selection (currently relying on sceneID, not ideal).
-   - Add option for each individual race time (idealy with individual lap times) 
-     to be printed in terminal at the end of a run.
-
 ---------------------------- SETTINGS BASICS ---------------------------------
         To set your run category, adjust the value of the [preset] setting
     (the first setting under "AUTOSPLITTER SETTINGS") below. Setting a 
