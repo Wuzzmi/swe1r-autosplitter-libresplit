@@ -39,7 +39,7 @@ local settings = {
 --------------------------- AUTOSPLITTER SETTINGS ----------------------------
 --____________________________________________________________________________
 -- CATEGORY PRESET -->|  None  | Any%/Amateur/Semi |  100%  | All Tracks NG+ |
-   preset = 0,     -->|  [0]   |        [1]        |  [2]   |      [3]       |
+   preset = 3,     -->|  [0]   |        [1]        |  [2]   |      [3]       |
 --____________________|________|___________________|________|________________|
 ----------------------------------------------------------|  PRESET = SETS
 -- TIMING METHOD      -->| Loadless RT | In Game Race Time| [1,2,3] = [true]
@@ -49,7 +49,7 @@ local settings = {
    require1st = false, -->| [true] |       [false]        |   [1,3] = [false]
 ----------------------------------------------------------|-------------------
 -- AUTO START TRIGGER     -->| "START RACE" | File Select |     [3] = [true]
-   startRaceTrig = false, -->|    [true]    |   [false]   |   [1,2] = [false]
+   startRaceTrig = true, -->|    [true]    |   [false]   |   [1,2] = [false]
 ----------------------------------------------------------\___________________
 -- AUTO RESET TRIG -->| None | File Select(risky)| Main Menu | Settings(safe)| 
    autoReset = 2,  -->| [0]  |        [1]        |    [2]    |      [3]      |
