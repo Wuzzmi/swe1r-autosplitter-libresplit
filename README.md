@@ -1,14 +1,14 @@
 # STAR WARS RACER AUTOSPLITTER (for LibreSplit)
 **A script that automates LibreSplit's timer, for Star Wars Episode I Racer speedruns.**  
 Based on [Galeforce's LiveSplit Autosplitter](https://github.com/everalert/swe1r-autosplitter) v0.5.1  
-The same autosplitter logic, converted to Lua, with some additions/compatibility changes.
+The same autosplitter logic converted to Lua, with some compatibility changes.
 
 > [!note]
-> This script includes all of the base functionalities required for all speedrun categories, but some extra features still have bugs/caveats, so is still a work in progress.
+> This script includes all of the basic functionalities required for all speedrun categories, but some features still have bugs/caveats, so it's still a work in progress.
 >   
 > *\*\*Starred Features\*\** indicate that, that feature currently has a bug/caveat associated with it.
 >    
-> Unlike [LiveSplit](https://github.com/LiveSplit/LiveSplit), [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main) currently has no support for managing autosplitter settings. To resolve this difference, this script utilizes in script settings, and the ability to print these stats in the terminal.
+> Unlike [LiveSplit](https://github.com/LiveSplit/LiveSplit), [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main) currently has no support for managing autosplitter settings. To resolve this difference, the provided scripts utilize in script settings that can be edited for complete settings control. For easy category switching 3 variants of the default script are provided. These variants are identical to the default script, they just have different preset settings set, so the settings can be fully edited as well.
   
 ### FEATURES
 * Auto start when file is opened, or *\*\*optionally when "Start Race" is selected\*\**
@@ -24,15 +24,10 @@ The same autosplitter logic, converted to Lua, with some additions/compatibility
 * Installation of the re-released PC version of Star Wars Episode I Racer (Steam, GOG, etc.)  
     - does not work with the original CD version
 
-## SETUP TLDR
-* Edit the **in script settings** under **"AUTOSPLITTER SETTINGS"**
-* Load and Enable the script in LibreSplit
-* Run Star Wars Racer
-
-## SETTINGS
-* Open **"swe1r-autosplitter.lua"** in a text editor
+## SETUP
+* Open **"swe1r-autosplitter.lua"** or one of it's varients in a text editor
    
-At the top of the script there are notes, followed by a small settings guide, and under that will be the "AUTOSPLITTER SETTING". 
+At the top of the script there are notes, followed by a small settings guide, and under that are the "AUTOSPLITTER SETTINGS". 
 
 ### AUTOSPLITTER SETTINGS
 ```lua
@@ -62,28 +57,22 @@ local settings = {
 ------------------------------------------------------------------------------
 }
 ```
-Here is where all settings can be modified. The script settings include a minimal description of each option, this should be enough to work with. 
+Here is where all settings can be modified. There is a minimal description of each setting to the right of where it is set. All settings are described in greater detail after the **ENABLE SCRIPT** section. 
   
-In most cases **```preset```** is the only setting that requires adjustment.  
+In most cases **```preset```** is the only setting that will require adjustment. However ensuring **```autoReset```** is set to trigger in a location that works for you is a good idea (Main Menu by default).     
   
 > [!caution]
 > ```lua
 > setting = "value",
 > ```
-> **When adjusting a **```setting```** it is important that you:**
-> * Only edit the **```value```**.
-> * Only replace a **```value```** with another of its type. 
+> **In order to avoid breaking the script, it is important that you:**
+> * Only edit the **```value```** of a **```setting```**.
+> * Only replace a **```value```** with another of its type.
 > * Make sure that any **```value```** is ended with a comma **```,```**.
->   
-> Changing or removing any other syntax (like **```setting```** names, missing any commas **```,```** etc.) will break the script.
-  
-If you are comfotable go ahead and adjust the settings to your preference. If you would like more information, each setting is described in greater detail after the **ENABLE SCRIPT** section.  
-  
-
    
 ## ENABLE SCRIPT
 * Open LibreSplit
-* Right click, "Open Autosplitter" and "Enable Autosplitter" 
+* Right click, to open the autosplitter script and "Enable Autosplitter" 
   
 ![Rightclick in LibreSplit](https://github.com/Wuzzmi/swe1r-auto_splitter/blob/main/img/rightclick-autosplitter-libresplit.png)
   
@@ -96,7 +85,7 @@ ___
 ## FULL SETTINGS BREAKDOWN
 ### CATEGORY PRESET
 ```lua
-preset = 1,
+preset = 0,
 ```
 **```preset```** is a one setting adjustment for switching run categories. It functions as a override for a number of other settings. For this reason **```preset``` ```0```** exists, allowing full settings control for special use cases.
 |  | None | Any% / Amateur / Semi-Pro | 100% | New Game + |
@@ -149,7 +138,7 @@ ___
 ```lua
 autoReset = 2,
 ```
-**```autoReset```** gives the choice to enable auto reset and if so, the location it will be triggered. For All Tracks NG+ runs that require a file/mode change mid run, it is important to set **```autoReset```** to either **```0```** or to a location that will not be reached during the switch. This ensures file/mode changes do not reset and ruining the run. Aside from All Tracks NG+ runs, **```autoReset```** is just personal preference.
+**```autoReset```** allows you to disable auto reset or choose the location it will be triggered. For any runs that require a file/mode change mid run, it is important to set **```autoReset```** to trigger at a location that will not be reached during the run, or to disable it. This ensures file/mode changes do not reset and ruining the run, otherwise **```autoReset```** is just personal preference.
 |  | Disabled | File Select (Risky) | Main Menu | Settings (Safe) |
 |:---:|:---:|:---:|:---:|:---:|
 |**autoReset =**| 0 | 1 | 2 | 3 |
@@ -159,7 +148,7 @@ ___
 ```lua
 removeTabbedTime = false,
 ```
-Use **```removeTabbedTime```** to register unfocused/tabbed-out time as loading time, so it will not be counted on the timer. **```removeTabbedTime```** will only have an effect if **```loadlessRT = true,```** (LRT) is set. Otherwise unfocused/tabbed-out time will be counted. Usage of **```removeTabbedTime```** is up to you.
+Use **```removeTabbedTime```** to register unfocused/tabbed-out time as loading time, so it will not be counted on the timer. **```removeTabbedTime```** will only have an effect if **```loadlessRT = true,```** (LRT). Usage of **```removeTabbedTime```** is up to you.
 |  | Tabbed Time Removed | Tabbed Time Counted |
 |:---:|:---:|:---:|
 |**removeTabbedTime =**| true | false |
@@ -167,8 +156,8 @@ Use **```removeTabbedTime```** to register unfocused/tabbed-out time as loading 
 > ***\*\*BUG\*\****
 >  
 > While **```removeTabbedTime = true```**, if you use LibreSplits "Reset Timer" keybind, or right click in LibreSplit and click reload, you will trigger a bug!
-> This bug seems to invert loading/tabbed-out time. So if the timer would normally be running it will not, but will run while in a loading screen or while tabbed-out.
-> If this happens you will need to trigger an auto reset (if **```autoReset = true```**), or fully restart LibreSplit. 
+> This bug inverts loading/tabbed-out time, so when the timer would normally run it does not, but instead will run while in a loading screen or while tabbed-out.
+> If this happens you will need to trigger an auto reset (if **```autoReset```** is not disabled), or fully restart LibreSplit. 
 
 ___
 
