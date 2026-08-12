@@ -94,6 +94,7 @@ local vars = {
     loadBufferSize = 0,
     loading = false
 }
+
 -- If address is nil, settings.it to 0 and prints alert
 local function nilGuard(value, idString)
     if value == nil then
@@ -103,18 +104,18 @@ local function nilGuard(value, idString)
     end
     return value
 end
+
 -- Function to format time as string (h:mm:ss.ff)
 local function formatTime(seconds)
     if seconds > 3600 then
-        return string.format("%d:%d:%05.2f", seconds / 3600, 
+        return string.format("%d:%d:%05.3f", seconds / 3600, 
         (seconds % 3600) / 60, seconds % 60)
     elseif seconds > 60 then
-        return string.format("%d:%05.2f", seconds / 60, seconds % 60)
+        return string.format("%d:%05.3f", seconds / 60, seconds % 60)
     else
-        return string.format("%05.2f", seconds)
+        return string.format("%05.3f", seconds)
     end
 end
-
 
 function startup()
     useGameTime = not settings.loadlessRT
