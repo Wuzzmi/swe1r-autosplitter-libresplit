@@ -4,7 +4,7 @@ Based on [Galeforce's LiveSplit Autosplitter](https://github.com/everalert/swe1r
 The same autosplitter logic converted to Lua, with some compatibility changes.
 
 > [!note]
-> This script includes all of the basic functionalities required for all speedrun categories, but some features still have bugs/caveats, so it's still a work in progress.
+> Currently some features have minor bugs/caveats. There will be some rough edges while LibreSplit is in prerelease and I sort out one last issue on my end. These imperfections are small and shouldn't have an effect on the majority of runs. The bugs/caveats are detailed in the **SETTINGS BREAKDOWN** section.
 >   
 > *\*\*Starred Features\*\** indicate that, that feature currently has a bug/caveat associated with it.
 >    
@@ -57,9 +57,9 @@ local settings = {
 ------------------------------------------------------------------------------
 }
 ```
-Here is where all settings can be modified. There is a minimal description of each setting to the right of where it is set. All settings are described in greater detail after the **ENABLE SCRIPT** section. 
+Here is where all settings can be modified. There is a minimal description of each setting to it's right. All settings are described in greater detail after the **ENABLE SCRIPT** section. 
   
-In most cases **```preset```** is the only setting that will require adjustment. However ensuring **```autoReset```** is set to trigger in a location that works for you is a good idea (Main Menu by default).     
+It is highly recommended that you adjust the **```autoReset```** trigger to a location that works for you (Main Menu by default).      
   
 > [!caution]
 > ```lua
@@ -82,7 +82,7 @@ In most cases **```preset```** is the only setting that will require adjustment.
 **Now everything is all set. The autosplitter will function when you run Star Wars Racer!**
 ___  
   
-## FULL SETTINGS BREAKDOWN
+## SETTINGS BREAKDOWN
 ### CATEGORY PRESET
 ```lua
 preset = 0,
