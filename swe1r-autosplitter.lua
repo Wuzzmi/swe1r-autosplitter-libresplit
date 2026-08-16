@@ -64,8 +64,6 @@ if settings.preset == 1 or 2 or 3 then
     settings.loadlessRT = true
     settings.require1st = settings.preset == 2 and true or false
     settings.startRaceTrig = settings.preset == 3 and true or false
-else
-    settings.preset = 0
 end
 
 local current = {

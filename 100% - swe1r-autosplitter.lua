@@ -46,7 +46,7 @@ local settings = {
    loadlessRT = true, -->|    [true]   |     [false]      |  
 ----------------------------------------------------------|-------------------
 -- WIN CONDITION       -->|  1st   |  4th/3rd(SMR/BB/BEC) |     [2] = [true] 
-   require1st = true, -->| [true] |       [false]        |   [1,3] = [false]
+   require1st = true,  -->| [true] |       [false]        |   [1,3] = [false]
 ----------------------------------------------------------|-------------------
 -- AUTO START TRIGGER     -->| "START RACE" | File Select |     [3] = [true]
    startRaceTrig = false, -->|    [true]    |   [false]   |   [1,2] = [false]
@@ -64,8 +64,6 @@ if settings.preset == 1 or 2 or 3 then
     settings.loadlessRT = true
     settings.require1st = settings.preset == 2 and true or false
     settings.startRaceTrig = settings.preset == 3 and true or false
-else
-    settings.preset = 0
 end
 
 local current = {
