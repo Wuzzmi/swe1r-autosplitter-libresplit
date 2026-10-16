@@ -31,7 +31,7 @@ At the top of the script there are notes, followed by a small settings guide, an
 
 ### AUTOSPLITTER SETTINGS
 ```lua
-local settings = {
+local sets = {
 --____________________________________________________________________________
 --------------------------- AUTOSPLITTER SETTINGS ----------------------------
 --____________________________________________________________________________
@@ -45,8 +45,8 @@ local settings = {
 -- WIN CONDITION       -->|  1st   |  4th/3rd(SMR/BB/BEC) |     [2] = [true] 
    require1st = false, -->| [true] |       [false]        |   [1,3] = [false]
 ----------------------------------------------------------|-------------------
--- AUTO START TRIGGER     -->| "START RACE" | File Select |     [3] = [false]
-   startRaceTrig = false, -->|    [true]    |   [false]   |   [1,2] = [true]
+-- AUTO START TRIGGER     -->| "START RACE" | File Select |     [3] = [true]
+   startRaceTrig = false, -->|    [true]    |   [false]   |   [1,2] = [false]
 ----------------------------------------------------------\___________________
 -- AUTO RESET TRIG -->| None | File Select(risky)| Main Menu | Settings(safe)| 
    autoReset = 2,  -->| [0]  |        [1]        |    [2]    |      [3]      |
