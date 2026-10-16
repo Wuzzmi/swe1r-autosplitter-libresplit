@@ -77,7 +77,7 @@ In most cases **```preset```** is the only setting that will require adjustment.
 ![Rightclick in LibreSplit](https://github.com/Wuzzmi/swe1r-auto_splitter/blob/main/img/rightclick-autosplitter-libresplit.png)
   
 > [!important]
-> If you edit your script settings after the script has already been loaded and enabled, you will need to uncheck and recheck "Enable Auto Splitter" for the changes to take effect.
+> If you edit your script settings after the script has already been loaded and enabled, you will need to right click "Reload" or recheck "Enable Auto Splitter" for the changes to take effect.
   
 **Now everything is all set. The autosplitter will function when you run Star Wars Racer!**
 ___  
