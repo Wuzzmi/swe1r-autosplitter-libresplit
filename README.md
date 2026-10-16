@@ -8,15 +8,15 @@ The same autosplitter logic converted to Lua, with some compatibility changes.
 >   
 > *\*\*Starred Features\*\** indicate that, that feature currently has a bug/caveat associated with it.
 >    
-> Unlike [LiveSplit](https://github.com/LiveSplit/LiveSplit), [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main) currently has no support for managing autosplitter settings. To resolve this difference, the provided scripts utilize in script settings that can be edited for complete settings control. For easy category switching 3 variants of the default script are provided. These variants are identical to the default script, they just have different preset settings set, so the settings can be fully edited as well.
+> [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main) has recently implemented a way to manage autosplitter settings, but this script is not setup to handle this yet. Currently the provided scripts utilize in script settings that can be edited for complete settings control. For easy category switching 3 variants of the default script are provided. These variants are identical to the default script, they just have different preset settings set, so the settings can be fully edited as well.
   
 ### FEATURES
 * Auto start when file is opened, or *\*\*optionally when "Start Race" is selected\*\**
 * Auto split at race finish, with toggle for 1st place requirement
 * Auto reset, with choice of reset location
 * Optional run category presets
-* Choice of LRT, or *\*\*IGT\*\** timing methods 
-* *\*\*Option to remove unfocused/tabbed-out time\*\**
+* Choice of LRT, or IGT timing methods 
+* Option to remove unfocused/tabbed-out time
 
 ### REQUIRES
 * [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main)
@@ -72,7 +72,7 @@ In most cases **```preset```** is the only setting that will require adjustment.
    
 ## ENABLE SCRIPT
 * Open LibreSplit
-* Right click, to open the autosplitter script and "Enable Autosplitter" 
+* Right click, to open the autosplitter and select "Enable Autosplitter" 
   
 ![Rightclick in LibreSplit](https://github.com/Wuzzmi/swe1r-auto_splitter/blob/main/img/rightclick-autosplitter-libresplit.png)
   
@@ -103,10 +103,6 @@ loadlessRT = true,
 |**loadlessRT =**| True | false |
 | **```preset```** | **```1``` ```2``` ```3```** |  |
 
- > [!warning]
-> ***\*\*BUG\*\****
->   
-> While **```loadlessRT = false```** (IGT), if you right click in LibreSplit and select reload, you will trigger a bug. This bug will make your run act as a RTA run! To fix this, reset the timer with the "Reset Timer" keybind, an auto reset (if **```autoReset```** is enabled), or restart LibreSplit.
 ___
 ### WIN CONDITION
 ```lua
@@ -131,7 +127,7 @@ startRaceTrig = false,
 > [!important]
 > ***\*\*SEMIFUNCTIONAL\*\****
 >   
-> Currently for the timer to trigger, you must enter the track selection scene, then move directly to select "Start Race". If you deviate, just return to the track selection scene before heading to "Start Race". 
+> Currently for the "START RACE" trigger to work, you must enter the track selection scene, then move directly to select "Start Race". If you deviate, just return to the track selection scene before heading to "Start Race". 
 
 ___
 ### AUTO RESET TRIGGER
@@ -152,12 +148,6 @@ Use **```removeTabbedTime```** to register unfocused/tabbed-out time as loading 
 |  | Tabbed Time Removed | Tabbed Time Counted |
 |:---:|:---:|:---:|
 |**removeTabbedTime =**| true | false |
-> [!warning]
-> ***\*\*BUG\*\****
->  
-> While **```removeTabbedTime = true```**, if you use LibreSplits "Reset Timer" keybind, or right click in LibreSplit and click reload, you will trigger a bug!
-> This bug inverts loading/tabbed-out time, so when the timer would normally run it does not, but instead will run while in a loading screen or while tabbed-out.
-> If this happens you will need to trigger an auto reset (if **```autoReset```** is not disabled), or fully restart LibreSplit. 
 
 ___
 
