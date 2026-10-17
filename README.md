@@ -7,8 +7,6 @@ The same autosplitter logic converted to Lua, with some compatibility changes.
 > This script includes all of the basic functionalities required for all speedrun categories, but some features still have bugs/caveats, so it's still a work in progress.
 >   
 > *\*\*Starred Features\*\** indicate that, that feature currently has a bug/caveat associated with it.
->    
-> [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main) has recently implemented a way to manage autosplitter settings, but this script is not setup to handle this yet. Currently the provided scripts utilize in script settings that can be edited for complete settings control. For easy category switching 3 variants of the default script are provided. These variants are identical to the default script, they just have different preset settings set, so the settings can be fully edited as well.
   
 ### FEATURES
 * Auto start when file is opened, or *\*\*optionally when "Start Race" is selected\*\**
@@ -24,15 +22,20 @@ The same autosplitter logic converted to Lua, with some compatibility changes.
 * Installation of the re-released PC version of Star Wars Episode I Racer (Steam, GOG, etc.)  
     - does not work with the original CD version
 
-## SETUP
-* Open **"swe1r-autosplitter.lua"** or one of it's varients in a text editor
-   
-At the top of the script there are notes, followed by a small settings guide, and under that are the "AUTOSPLITTER SETTINGS". 
-
 ### AUTOSPLITTER SETTINGS
-Autosplitter settings can be adjusted near the bottom of each split file, under the "auto_splitter_settings" section. All settings are described in greater detail after the **ENABLE SCRIPT** section. 
-  
-In most cases **```preset```** is the only setting that will require adjustment. However ensuring **```autoReset```** is set to trigger in a location that works for you is a good idea (Main Menu by default).     
+Autosplitter settings can be adjusted near the bottom of each split file, under the "auto_splitter_settings" section. Eventually there should be a gui option, but this in not implemented in LibreSplit yet. 
+
+```json
+  "auto_splitter_settings": {
+    "preset": 1,
+    "loadlessRT": true,
+    "require1st": false,
+    "startRaceTrig": false,
+    "autoReset": 2,
+    "removeTabbedTime": false
+  },
+```
+All settings are described in greater detail below.   
   
 ## ENABLE SCRIPT
 * Open LibreSplit
@@ -48,8 +51,8 @@ ___
   
 ## FULL SETTINGS BREAKDOWN
 ### CATEGORY PRESET
-```lua
-preset = 0,
+```json
+"preset": 1 
 ```
 **```preset```** is a one setting adjustment for switching run categories. It functions as a override for a number of other settings. For this reason **```preset``` ```0```** exists, allowing full settings control for special use cases.
 |  | None | Any% / Amateur / Semi-Pro | 100% | New Game + |
@@ -57,8 +60,8 @@ preset = 0,
 | **preset =** | 0 | 1 | 2 | 3 |  
 ___
 ### TIMING METHOD
-```lua
-loadlessRT = true,
+```json
+"loadlessRT": true
 ```
 **```loadlessRT```** functions as a timing method toggle, choose either LRT (Loadless Real Time), or IGT (In Game Race Time). As shown in the table below, every category **```preset```** overrides to LRT . IGT is not useful for recording official runs, but is here for other uses if you have one.
 
@@ -69,8 +72,8 @@ loadlessRT = true,
 
 ___
 ### WIN CONDITION
-```lua
-require1st = false,
+```json
+"require1st": false
 ```
 **```require1st```** toggles requiring a 1st place finish, to trigger a split. The default win condition is used otherwise, which requires 4th place, or 3rd on the last track of a circuit ( SMR/BB/BEC ). **```require1st```** is typically used for the 100% category.
 |  | Require 1st | Require 4th, 3rd (on SMR/BB/BEC) |
@@ -80,8 +83,8 @@ require1st = false,
 
 ___
 ### AUTO START TRIGGER
-```lua
-startRaceTrig = false,
+```json
+"startRaceTrig": false
 ```
 **```startRaceTrig```** sets the timer to start when "Start Race" is selected, otherwise the timer will start at file open. **```startRaceTrig```** is used for the All Tracks NG+ category, which requires timing to start when selecting "Start Race" for the first track.
 |  | "Start Race" Selected | File Opened |
@@ -95,8 +98,8 @@ startRaceTrig = false,
 
 ___
 ### AUTO RESET TRIGGER
-```lua
-autoReset = 2,
+```json
+"autoReset": 2
 ```
 **```autoReset```** allows you to disable auto reset or choose the location it will be triggered. For any runs that require a file/mode change mid run, it is important to set **```autoReset```** to trigger at a location that will not be reached during the run, or to disable it. This ensures file/mode changes do not reset and ruining the run, otherwise **```autoReset```** is just personal preference.
 |  | Disabled | File Select (Risky) | Main Menu | Settings (Safe) |
@@ -105,8 +108,8 @@ autoReset = 2,
  
 ___
 ### REMOVE UNFOCUSED TIME (Tabbed-Out)
-```lua
-removeTabbedTime = false,
+```json
+"removeTabbedTime": false 
 ```
 Use **```removeTabbedTime```** to register unfocused/tabbed-out time as loading time, so it will not be counted on the timer. **```removeTabbedTime```** will only have an effect if **```loadlessRT = true,```** (LRT). Usage of **```removeTabbedTime```** is up to you.
 |  | Tabbed Time Removed | Tabbed Time Counted |
