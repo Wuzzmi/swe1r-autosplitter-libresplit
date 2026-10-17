@@ -9,62 +9,19 @@
    - Auto split at race finish, with toggle for 1st place requirement
    - Auto reset, with choice of reset location
    - Optional run category presets
-   - Choice of LRT, or **IGT** timing methods
-   - **Option to remove unfocused/tabbed-out time**
+   - Choice of LRT, or IGT timing methods
+   - Option to remove unfocused/tabbed-out time
   
    USING THIS SCRIPT
-   - Adjust the in script sets (below) 
+   - Adjust the script settings in your split file under "auto_splitter_settings"
    - Load and enable this script in LibreSplit
    - Run Star Wars Racer
 
----------------------------- SETTINGS BASICS ---------------------------------
-        To set your run category, adjust the value of the [preset] setting
-    (the first setting under "AUTOSPLITTER SETTINGS") below. Setting a 
-    [1, 2, or 3] whichever cooresponds with your run category(right of [preset]). 
-    Making sure to keep the comma!!! 
----------------------------- ADVANCED SETTINGS -------------------------------
-         Adjusted any sets to preference, just note that category presets.
-    [1, 2, 3] override a number of the other sets. Each preset's override 
-    values, are displayed in the box on the right side of sets. If your 
-    preset overrides a prefered setting, set [preset = 0,] and ensure all other 
-    sets are set correctly. 
-
-    See the github README for more indepth details on each setting.
+    See the github README for more in depth details on each setting.
     https://github.com/Wuzzmi/swe1r-autosplitter-libresplit
 --]]
 
 process("SWEP1RCR.EXE")
-local sets = {
---____________________________________________________________________________
---------------------------- AUTOSPLITTER SETTINGS ----------------------------
---____________________________________________________________________________
--- CATEGORY PRESET -->|  None  | Any%/Amateur/Semi |  100%  | All Tracks NG+ |
-   preset = 0,     -->|  [0]   |        [1]        |  [2]   |      [3]       |
---____________________|________|___________________|________|________________|
-----------------------------------------------------------|  PRESET = SETS
--- TIMING METHOD      -->| Loadless RT | In Game Race Time| [1,2,3] = [true]
-   loadlessRT = true, -->|    [true]   |     [false]      |  
-----------------------------------------------------------|-------------------
--- WIN CONDITION       -->|  1st   |  4th/3rd(SMR/BB/BEC) |     [2] = [true] 
-   require1st = false, -->| [true] |       [false]        |   [1,3] = [false]
-----------------------------------------------------------|-------------------
--- AUTO START TRIGGER     -->| "START RACE" | File Select |     [3] = [true]
-   startRaceTrig = false, -->|    [true]    |   [false]   |   [1,2] = [false]
-----------------------------------------------------------\___________________
--- AUTO RESET TRIG -->| None | File Select(risky)| Main Menu | Settings(safe)| 
-   autoReset = 2,  -->| [0]  |        [1]        |    [2]    |      [3]      |
-------------------------------------------------------------------------------
--- TABBED-OUT TIME TREATMENT -->| Remove Tabbed Time | Count Tabbed Time |
-   removeTabbedTime = false, -->|       [true]       |      [false]      |
---____________________________________________________________________________
-------------------------------------------------------------------------------
-}
--- Preset overrides 
-if sets.preset == 1 or sets.preset == 2 or sets.preset == 3 then 
-    sets.loadlessRT = true
-    sets.require1st = sets.preset == 2 and true or false
-    sets.startRaceTrig = sets.preset == 3 and true or false
-end
 
 local current = {
     raceTime = 0.0,
@@ -115,6 +72,65 @@ local function formatTime(seconds)
     end
 end
 
+function define_settings()
+    settings.define("preset", {
+        name = "Preset",
+        type = SETTING_INTEGER,
+        default = 0,
+        desc = "Quick switch for run categories. 0 = Custom/no preset, 1 = Any%/Amateur/Semi, 2 = 100%, 3 = All Tracks NG+"
+    })
+
+    settings.define("loadlessRT", {
+        name = "Loadless Real Time",
+        type = SETTING_BOOLEAN,
+        default = true,
+        desc = "Pauses the timer during loads."
+    })
+
+    settings.define("require1st", {
+        name = "Require 1st",
+        type = SETTING_BOOLEAN,
+        default = false,
+        desc = "Races require a first place finish to trigger a split."
+    })
+
+    settings.define("startRaceTrig", {
+        name = "Auto start @ Start Race",
+        type = SETTING_BOOLEAN,
+        default = false,
+        desc = "Timer will start when selecting Start Race instead of file select."
+    })
+
+    settings.define("autoReset", {
+        name = "Auto Reset",
+        type = SETTING_INTEGER,
+        default = 2,
+        desc = "Choose to use auto reset and where it triggers. 0 = None, 1 = File Select(risky), 2 = Main Menu, 3 = Settings(safe)"
+    })
+
+    settings.define("removeTabbedTime", {
+        name = "Remove Tabbed Time",
+        type = SETTING_BOOLEAN,
+        default = false,
+        desc = "Stops the timer while game is tabbed out/loses focus."
+    })
+end
+
+local sets = {
+   preset = settings.get("preset"),
+   loadlessRT = settings.get("loadlessRT"), 
+   require1st = settings.get("require1st"), 
+   startRaceTrig = settings.get("startRaceTrig"), 
+   autoReset = settings.get("autoReset"), 
+   removeTabbedTime = settings.get("removeTabbedTime"),
+}
+
+-- Preset overrides 
+if sets.preset == 1 or sets.preset == 2 or sets.preset == 3 then 
+    sets.loadlessRT = true
+    sets.require1st = sets.preset == 2 and true or false
+    sets.startRaceTrig = sets.preset == 3 and true or false
+end
 
 function startup()
     refreshRate = 24 -- Starting point, will be calculated dynamically

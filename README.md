@@ -30,46 +30,10 @@ The same autosplitter logic converted to Lua, with some compatibility changes.
 At the top of the script there are notes, followed by a small settings guide, and under that are the "AUTOSPLITTER SETTINGS". 
 
 ### AUTOSPLITTER SETTINGS
-```lua
-local sets = {
---____________________________________________________________________________
---------------------------- AUTOSPLITTER SETTINGS ----------------------------
---____________________________________________________________________________
--- CATEGORY PRESET -->|  None  | Any%/Amateur/Semi |  100%  | All Tracks NG+ |
-   preset = 0,     -->|  [0]   |        [1]        |  [2]   |      [3]       |
---____________________|________|___________________|________|________________|
-----------------------------------------------------------|  PRESET = SETS
--- TIMING METHOD      -->| Loadless RT | In Game Race Time| [1,2,3] = [true]
-   loadlessRT = true, -->|    [true]   |     [false]      |  
-----------------------------------------------------------|-------------------
--- WIN CONDITION       -->|  1st   |  4th/3rd(SMR/BB/BEC) |     [2] = [true] 
-   require1st = false, -->| [true] |       [false]        |   [1,3] = [false]
-----------------------------------------------------------|-------------------
--- AUTO START TRIGGER     -->| "START RACE" | File Select |     [3] = [true]
-   startRaceTrig = false, -->|    [true]    |   [false]   |   [1,2] = [false]
-----------------------------------------------------------\___________________
--- AUTO RESET TRIG -->| None | File Select(risky)| Main Menu | Settings(safe)| 
-   autoReset = 2,  -->| [0]  |        [1]        |    [2]    |      [3]      |
-------------------------------------------------------------------------------
--- TABBED-OUT TIME TREATMENT -->| Remove Tabbed Time | Count Tabbed Time |
-   removeTabbedTime = false, -->|       [true]       |      [false]      |
---____________________________________________________________________________
-------------------------------------------------------------------------------
-}
-```
-Here is where all settings can be modified. There is a minimal description of each setting to the right of where it is set. All settings are described in greater detail after the **ENABLE SCRIPT** section. 
+Autosplitter settings can be adjusted near the bottom of each split file, under the "auto_splitter_settings" section. All settings are described in greater detail after the **ENABLE SCRIPT** section. 
   
 In most cases **```preset```** is the only setting that will require adjustment. However ensuring **```autoReset```** is set to trigger in a location that works for you is a good idea (Main Menu by default).     
   
-> [!caution]
-> ```lua
-> setting = "value",
-> ```
-> **In order to avoid breaking the script, it is important that you:**
-> * Only edit the **```value```** of a **```setting```**.
-> * Only replace a **```value```** with another of its type.
-> * Make sure that any **```value```** is ended with a comma **```,```**.
-   
 ## ENABLE SCRIPT
 * Open LibreSplit
 * Right click, to open the autosplitter and select "Enable Autosplitter" 
@@ -77,7 +41,7 @@ In most cases **```preset```** is the only setting that will require adjustment.
 ![Rightclick in LibreSplit](https://github.com/Wuzzmi/swe1r-auto_splitter/blob/main/img/rightclick-autosplitter-libresplit.png)
   
 > [!important]
-> If you edit your script settings after the script has already been loaded and enabled, you will need to right click "Reload" or recheck "Enable Auto Splitter" for the changes to take effect.
+> If you edit your script settings after the script has already been loaded, you will need to right click "Reload" the autosplitter for the changes to take effect.
   
 **Now everything is all set. The autosplitter will function when you run Star Wars Racer!**
 ___  
