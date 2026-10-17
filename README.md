@@ -1,7 +1,7 @@
 # STAR WARS RACER AUTOSPLITTER (for LibreSplit)
 **A script that automates LibreSplit's timer, for Star Wars Episode I Racer speedruns.**  
 Based on [Galeforce's LiveSplit Autosplitter](https://github.com/everalert/swe1r-autosplitter) v0.5.1  
-The same autosplitter logic converted to Lua, with some compatibility changes.
+The same autosplitter logic converted to Lua, with some compatibility changes, and additions.
 
 > [!note]
 > This script includes all of the basic functionalities required for all speedrun categories, but some features still have bugs/caveats, so it's still a work in progress.
@@ -57,7 +57,7 @@ ___
 **```preset```** is a one setting adjustment for switching run categories. It functions as a override for a number of other settings. For this reason **```preset``` ```0```** exists, allowing full settings control for special use cases.
 |  | None | Any% / Amateur / Semi-Pro | 100% | New Game + |
 |:---:|:---:|:---:|:---:|:---:|
-| **preset =** | 0 | 1 | 2 | 3 |  
+| **preset** | 0 | 1 | 2 | 3 |  
 ___
 ### TIMING METHOD
 ```json
@@ -67,7 +67,7 @@ ___
 
 |  | Loadless Real Time | In Race Game Time |
 |:---:|:---:|:---:|
-|**loadlessRT =**| True | false |
+|**loadlessRT**| True | false |
 | **```preset```** | **```1``` ```2``` ```3```** |  |
 
 ___
@@ -78,7 +78,7 @@ ___
 **```require1st```** toggles requiring a 1st place finish, to trigger a split. The default win condition is used otherwise, which requires 4th place, or 3rd on the last track of a circuit ( SMR/BB/BEC ). **```require1st```** is typically used for the 100% category.
 |  | Require 1st | Require 4th, 3rd (on SMR/BB/BEC) |
 |:---:|:---:|:---:|
-|**require1st =**| true | false |
+|**require1st**| true | false |
 | **```preset```** | **```2```** | **```1``` ```3```** |
 
 ___
@@ -89,7 +89,7 @@ ___
 **```startRaceTrig```** sets the timer to start when "Start Race" is selected, otherwise the timer will start at file open. **```startRaceTrig```** is used for the All Tracks NG+ category, which requires timing to start when selecting "Start Race" for the first track.
 |  | "Start Race" Selected | File Opened |
 |:---:|:---:|:---:|
-|**startRaceTrig =**| true | false |
+|**startRaceTrig**| true | false |
 | **```preset```** | **```3```** | **```1``` ```2```** |
 > [!important]
 > ***\*\*SEMIFUNCTIONAL\*\****
@@ -101,10 +101,10 @@ ___
 ```json
 "autoReset": 2
 ```
-**```autoReset```** allows you to disable auto reset or choose the location it will be triggered. For any runs that require a file/mode change mid run, it is important to set **```autoReset```** to trigger at a location that will not be reached during the run, or to disable it. This ensures file/mode changes do not reset and ruining the run, otherwise **```autoReset```** is just personal preference.
+**```autoReset```** allows you to disable auto reset or choose the location it will be triggered. For any runs that require a file/mode change mid run, it is important to set **```autoReset```** to trigger at a location that will not be reached during the run, or to disable it. This ensures file/mode changes do not reset and ruining the run. Otherwise **```autoReset```** is just personal preference.
 |  | Disabled | File Select (Risky) | Main Menu | Settings (Safe) |
 |:---:|:---:|:---:|:---:|:---:|
-|**autoReset =**| 0 | 1 | 2 | 3 |
+|**autoReset**| 0 | 1 | 2 | 3 |
  
 ___
 ### REMOVE UNFOCUSED TIME (Tabbed-Out)
@@ -114,7 +114,7 @@ ___
 Use **```removeTabbedTime```** to register unfocused/tabbed-out time as loading time, so it will not be counted on the timer. **```removeTabbedTime```** will only have an effect if **```loadlessRT = true,```** (LRT). Usage of **```removeTabbedTime```** is up to you.
 |  | Tabbed Time Removed | Tabbed Time Counted |
 |:---:|:---:|:---:|
-|**removeTabbedTime =**| true | false |
+|**removeTabbedTime**| true | false |
 
 ___
 
