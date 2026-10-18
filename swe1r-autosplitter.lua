@@ -23,6 +23,7 @@
 
 process("SWEP1RCR.EXE")
 
+local sets = {}
 local current = {
     raceTime = 0.0,
     racePos = 0,
@@ -50,9 +51,7 @@ local vars = {
     loading = false
 }
 
-local sets = {}
-
--- If address is nil, sets.it to 0 and prints alert
+-- If address is nil, sets it to 0 and prints alert
 local function nilGuard(value, idString)
     if value == nil then
         print( 
@@ -62,38 +61,12 @@ local function nilGuard(value, idString)
     return value
 end
 
--- Function to format time as string (h:mm:ss.ff)
-local function formatTime(seconds)
-    if seconds > 3600 then
-        return string.format("%d:%d:%05.3f", seconds / 3600, 
-        (seconds % 3600) / 60, seconds % 60)
-    elseif seconds > 60 then
-        return string.format("%d:%05.3f", seconds / 60, seconds % 60)
-    else
-        return string.format("%05.3f", seconds)
-    end
-end
-
 function define_settings()
-    settings.define("category", {
-        name = "Category Preset",
-        type = SETTING_INTEGER,
-        default = 0,
-        desc = "Quick switch for run categories. 0 = Custom/No Category, 1 = Any%/Amateur/Semi, 2 = 100%, 3 = All Tracks NG+"
-    })
-
     settings.define("autoReset", {
         name = "Auto Reset",
         type = SETTING_INTEGER,
         default = 2,
         desc = "Choose to use auto reset and where it triggers. 0 = None, 1 = File Select(risky), 2 = Main Menu, 3 = Settings(safe)"
-    })
-
-    settings.define("useInRaceGT", {
-        name = "Use In Race Game Time",
-        type = SETTING_BOOLEAN,
-        default = false,
-        desc = "Counts only in race game time. Load Removed Time(LRT) is used if false."
     })
 
     settings.define("removeTabbedTime", {
@@ -102,36 +75,37 @@ function define_settings()
         default = false,
         desc = "Stops the timer while game is tabbed out/loses focus."
     })
+
     settings.define("require1st", {
         name = "Require 1st",
         type = SETTING_BOOLEAN,
         default = false,
-        desc = "Races require a first place finish to trigger a split. Overridden by Category Preset!"
+        desc = "Races require a first place finish to trigger a split."
     })
 
     settings.define("startRaceTrig", {
         name = "Auto start at Start Race",
         type = SETTING_BOOLEAN,
         default = false,
-        desc = "Timer will start when selecting Start Race instead of file select. Overridden by Category Preset!"
+        desc = "Timer will start when selecting Start Race instead of file select. "
+    })
+
+    settings.define("useInRaceGT", {
+        name = "Use In Race Game Time",
+        type = SETTING_BOOLEAN,
+        default = false,
+        desc = "Counts only in race game time. Load Removed Time(LRT) is used if false."
     })
 end
 
 function startup()
-   sets.category = settings.get("category")
    sets.autoReset = settings.get("autoReset")
-   sets.useInRaceGT = settings.get("useInRaceGT")
    sets.removeTabbedTime = settings.get("removeTabbedTime")
    sets.require1st = settings.get("require1st")
    sets.startRaceTrig = settings.get("startRaceTrig")
-    -- Preset overrides 
-    if sets.category == 1 or sets.category == 2 or sets.category == 3 then 
-        sets.require1st = sets.category == 2 and true or false
-        sets.startRaceTrig = sets.category == 3 and true or false
-    end
 
     refreshRate = 24 -- Starting point, will be calculated dynamically
-    useGameTime = sets.useInRaceGT
+    useGameTime = settings.get("useInRaceGT")
 end
 
 function state()
@@ -142,7 +116,7 @@ function state()
     current.frmLen = readAddress("double", 0xA22A40)
     current.sceneId = readAddress("short", 0xA9BA62)
     current.gameTabbedOut = readAddress("byte", 0x10CB64)
-    -- Limit string to 17 chars, sometimes odd chars are added at end 
+    -- Limit string to 17 chars, sometimes odd chars are added at the end 
     current.menTxt1 = string.sub (readAddress("string17", 0xA2C380), 1, 17)
 -- Nil guarded addresses, since they don't always hold a value, fixes bitwise errors
     current.selTrk = nilGuard(readAddress("byte", 0xBFDB8, 0x5D),
@@ -160,35 +134,9 @@ function state()
 end
 
 function update()
-    -- DEBUG VALUE PRINTING
-    print("\n===========================\nuseGameTime = " .. tostring(useGameTime))
-    print("isLoading() = " .. tostring(isLoading()))
-    if useGameTime then
-        print("gameTime() = " .. tostring(gameTime()))
-    end
-    print(settings.get("useInRaceGT"))
-    print(sets.useInRaceGT)
-
-    for i, tbl in ipairs({sets, current, vars}) do
-        if i == 1 then
-            print('\n---------------------------\n      sets\n---------------------------')
-        elseif i == 2 then
-            print('\n---------------------------\n      ADDRESS VALUES\n---------------------------')
-        elseif i == 3 then
-            print('\n---------------------------\n      VARIABLE VALUES\n---------------------------')
-        end
-        for k, v in pairs(tbl) do
-            if type(v) ~= "string" then 
-                v = tostring(v)
-            end
-            print (k .. " = " .. v)
-        end
-    end
-
-    
     -- Dynamically update refresh rate based on frame time
     refreshRate = current.frmLen > 0 and math.floor(1 / current.frmLen) or 24
-    end
+end
 
 function start()
     vars.gt = 0
