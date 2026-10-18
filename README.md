@@ -41,7 +41,7 @@ All settings are described in greater detail below.
 * Open LibreSplit
 * Right click, to open the autosplitter and select "Enable Autosplitter" 
   
-![Rightclick in LibreSplit](https://github.com/Wuzzmi/swe1r-auto_splitter/blob/main/img/rightclick-autosplitter-libresplit.png)
+![Rightclick in LibreSplit](https://github.com/Wuzzmi/repo-media/blob/main/Wuzzmi-LibreSplit-resources/img/rightclick-autosplitter-libresplit.png)
   
 > [!important]
 > If you edit your script settings after the script has already been loaded, you will need to right click "Reload" the autosplitter for the changes to take effect.
