@@ -1,6 +1,6 @@
 --[[
-  Star Wars Episode I Racer Autosplitter (for LibreSplit) by Wuzzmi
-  https://github.com/Wuzzmi/swe1r-autosplitter-libresplit
+  Star Wars Episode I Racer Auto Splitter (for LibreSplit) by Wuzzmi
+  https://github.com/Wuzzmi/swe1r_auto-splitter-libresplit
    - Based on Galeforce's LiveSplit Autosplitter v0.5.1
      https://github.com/everalert/swe1r-autosplitter
 
@@ -18,7 +18,7 @@
    - Run Star Wars Racer
 
     See the github README for more in depth details on each setting.
-    https://github.com/Wuzzmi/swe1r-autosplitter-libresplit
+    https://github.com/Wuzzmi/swe1r_auto-splitter-libresplit
 --]]
 
 process("SWEP1RCR.EXE")
@@ -40,7 +40,7 @@ local current = {
 }
 local old = shallow_copy_tbl(current)
 local vars = {
-    -- Autosplitter related variables
+    -- Auto splitter related variables
     raceDone = false,
     winCond = false,
     gt = 0,
