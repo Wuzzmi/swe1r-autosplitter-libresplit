@@ -4,7 +4,7 @@ Based on [Galeforce's LiveSplit Autosplitter](https://github.com/everalert/swe1r
 The same auto splitter logic converted to Lua, with some compatibility changes, and additions.
 
 > [!note]
-> This script includes all of the basic functionalities required for all speedrun categories, but some features still have bugs/caveats, so it's still a work in progress.
+> This script has the necessary functionalities for all run categories, but some features still have bugs/caveats, so is still somewhat a work in progress.
 >   
 > *\*\*Starred Features\*\** indicate that, that feature currently has a bug/caveat associated with it.
   
@@ -16,14 +16,16 @@ The same auto splitter logic converted to Lua, with some compatibility changes, 
 * Option to remove tabbed-out time/unfocused
 
 ### Requires
-* Download [Auto splitter](https://github.com/Wuzzmi/swe1r_auto-splitter-libresplit/archive/refs/heads/main.zip)
-* [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main)
+* [Download](https://github.com/Wuzzmi/swe1r_auto-splitter-libresplit/archive/refs/heads/main.zip) auto splitter
+* [LibreSplit](https://github.com/LibreSplit/LibreSplit/tree/main) installed
 * [JSON splits](https://github.com/Wuzzmi/swe1r_splits-libresplit/tree/master), or [converted](https://libresplit.org/converter) LSS splits
 * Installation of the re-released PC version of Star Wars Episode I Racer (Steam, GOG, etc.)  
     - does not work with the original CD version
 
 ### Auto Splitter Settings
-Auto splitter settings can be adjusted within each split file, under the "auto_splitter_settings" section. Eventually there should be a GUI option, but this in not implemented is LibreSplit yet. 
+Auto splitter settings can be adjusted within each split file, under the "auto_splitter_settings" section. 
+> [!note]
+> Eventually there should be a GUI option, but this in not implemented is LibreSplit yet. 
 
 ```json
 "auto_splitter_settings": {
@@ -43,7 +45,8 @@ All settings are described in greater detail below.
 ![Rightclick in LibreSplit](https://github.com/Wuzzmi/repo-media/blob/main/Wuzzmi-LibreSplit-resources/img/rightclick-autosplitter-libresplit.png)
   
 > [!important]
-> If you edit your script settings after the script has already been loaded, you will need to right click "Reload" the auto splitter for the changes to take effect.
+> * If you edit your script settings after the script has already been loaded, you will need to Reload the auto splitter for the changes to take effect.
+> * When using a new split file, the auto splitter must be loaded after the split file.
   
 **Now everything is all set. The auto splitter will function when you run Star Wars Racer!**
 
@@ -63,7 +66,7 @@ ___
 ```json
 "removeTabbedTime": false 
 ```
-Use **```removeTabbedTime```** to register unfocused/tabbed-out time as loading time, so it will not be counted on the timer. **```removeTabbedTime```** will only have an effect if **```loadlessRT = true,```** (LRT). Usage of **```removeTabbedTime```** is up to you.
+**```removeTabbedTime```** removes unfocused/tabbed-out time. It will have no effect if using in race game time.
 |  | Tabbed Time Removed | Tabbed Time Counted |
 |:---:|:---:|:---:|
 |**removeTabbedTime**| true | false |
@@ -73,7 +76,11 @@ ___
 ```json
 "require1st": false
 ```
-**```require1st```** toggles requiring a 1st place finish, to trigger a split. The default win condition is used otherwise, which requires 4th place, or 3rd on the last track of a circuit ( SMR/BB/BEC ). **```require1st```** is typically used for the 100% category.
+**```require1st```** toggles requiring a 1st place finish, to trigger a split. The default win condition is used otherwise, which requires 4th place, or 3rd on the last track of a circuit ( SMR/BB/BEC ). 
+
+*Recommened for: 100%*
+
+
 |  | Require 1st | Require 4th, 3rd (on SMR/BB/BEC) |
 |:---:|:---:|:---:|
 |**require1st**| true | false |
@@ -83,10 +90,14 @@ ___
 ```json
 "startRaceTrig": false
 ```
-**```startRaceTrig```** sets the timer to start when "Start Race" is selected, otherwise the timer will start at file open. **```startRaceTrig```** is used for the All Tracks NG+ category, which requires timing to start when selecting "Start Race" for the first track.
+**```startRaceTrig```** sets the timer to start when "Start Race" is selected, otherwise the timer will start at file open.
+
+*Recommened for: All Tracks NG+*
+
 |  | "Start Race" Selected | File Opened |
 |:---:|:---:|:---:|
 |**startRaceTrig**| true | false |
+
 > [!important]
 > ***\*\*SEMIFUNCTIONAL\*\****
 >   
@@ -97,7 +108,7 @@ ___
 ```json
 "useInRaceGT": false
 ```
-Enable to use IGT(in game race time), otherwise LRT(load removed time) will be used. IGT is not useful for recording official runs, but is here for other uses if you have one.
+Enable to use IGT (in race game time), otherwise LRT(load removed time) will be used. IGT is not useful for recording official runs, but is here for other uses if you have one.
 
 |  | In Race Game Time(IGT) | Load Removed Time(LRT) |
 |:---:|:---:|:---:|
