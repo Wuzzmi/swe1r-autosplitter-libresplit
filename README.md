@@ -13,7 +13,7 @@ The same auto splitter logic converted to Lua, with some compatibility changes, 
 * Auto split at race finish, with toggle for 1st place requirement
 * Auto reset, with choice of reset location
 * Choice of LRT, or IGT timing methods 
-* Option to remove tabbed-out time/unfocused
+* Option to remove tabbed-out/unfocused time
 
 ### Required
 * [Download](https://github.com/Wuzzmi/swe1r_auto-splitter-libresplit/archive/refs/heads/main.zip) auto splitter
