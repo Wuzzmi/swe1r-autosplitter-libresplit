@@ -6,7 +6,7 @@ The same auto splitter logic converted to Lua, with some compatibility changes, 
 > [!note]
 > This script has the requirements for all run categories, but some features still have bugs/caveats, so is still somewhat a work in progress.
 >   
-> *\*\*Starred Features\*\** indicate that, that feature currently has a bug/caveat associated with it.
+> *\*\*Starred Features\*\** indicate that, that feature currently has a bug/caveat associated with it. The details of any issue are provided under the relevant section in this readme.
   
 ### Features
 * Auto start when file is opened, or *\*\*optionally when "Start Race" is selected\*\**
